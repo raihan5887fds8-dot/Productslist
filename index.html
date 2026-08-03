@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>প্রোডাক্ট তালিকা</title>
+
+<!-- PWA ইনস্টলের জন্য প্রয়োজনীয় ট্যাগ -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a4d8f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="প্রোডাক্ট তালিকা">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+    color: #222;
+  }
+  h1 {
+    text-align: center;
+    color: #1a4d8f;
+    margin-bottom: 20px;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+    color: #444;
+  }
+  input[type="text"], input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .full-width { grid-column: 1 / -1; }
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .checkbox-row input { width: 18px; height: 18px; }
+  button {
+    background: #1a4d8f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover { background: #143d70; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  th {
+    background: #1a4d8f;
+    color: #fff;
+  }
+  tr:hover { background: #f9f9f9; }
+  .del-btn {
+    background: #d9534f;
+    padding: 5px 12px;
+    font-size: 13px;
+  }
+  .del-btn:hover { background: #b52b27; }
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+  }
+  .badge-yes { background: #28a745; }
+  .badge-no { background: #999; }
+  #status { text-align: center; font-size: 14px; color: #777; margin-top: 10px; }
+  .config-note {
+    background: #fff3cd;
+    border: 1px solid #ffe08a;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .search-box {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #1a4d8f;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  td[contenteditable="true"] {
+    cursor: text;
+    border-radius: 4px;
+  }
+  td[contenteditable="true"]:hover {
+    background: #f0f6ff;
+  }
+  td[contenteditable="true"]:focus {
+    outline: 2px solid #1a4d8f;
+    background: #eaf2ff;
+  }
+  .edit-hint {
+    font-size: 12px;
+    color: #888;
+    margin: 4px 0 10px;
+  }
+  .toggle-btn-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .secondary-btn {
+    background: #fff;
+    color: #1a4d8f;
+    border: 2px solid #1a4d8f;
+    flex: 1;
+    min-width: 200px;
+  }
+  .secondary-btn:hover { background: #eaf2ff; }
+  .secondary-btn.active {
+    background: #1a4d8f;
+    color: #fff;
+  }
+  .filter-btn-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    background: #eaf2ff;
+    color: #1a4d8f;
+    border: 2px solid #cfe0fb;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0;
+  }
+  .filter-chip:hover { background: #dbe9ff; }
+  .filter-chip.active {
+    background: #1a4d8f;
+    border-color: #1a4d8f;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📦 প্রোডাক্ট তালিকা</h1>
+
+  <div class="card">
+    <h3>📋 সব প্রোডাক্ট</h3>
+    <div class="filter-btn-row" id="filterBtnRow">
+      <button type="button" class="filter-chip" data-value="৫" onclick="filterByPiecePrice('৫', this)">৫ টাকার</button>
+      <button type="button" class="filter-chip" data-value="১০" onclick="filterByPiecePrice('১০', this)">১০ টাকার</button>
+      <button type="button" class="filter-chip" data-value="২০" onclick="filterByPiecePrice('২০', this)">২০ টাকার</button>
+      <button type="button" class="filter-chip" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)">ফ্যামিলি</button>
+    </div>
+    <input type="text" id="searchInput" class="search-box" placeholder="🔍 নাম, দাম, পিস — যেকোনো কিছু দিয়ে সার্চ করুন..." oninput="renderTable(this.value)">
+    <div class="edit-hint">💡 টেবিলের যেকোনো ঘরে ক্লিক করে সরাসরি এডিট করুন, তারপর বাইরে ক্লিক করলে সেভ হয়ে যাবে।</div>
+    <table>
+      <thead>
+        <tr>
+          <th>নাম</th>
+          <th>প্রতি কার্টুনে পিস</th>
+          <th>দাম</th>
+          <th>পিস বিক্রয় মূল্য</th>
+          <th>কয়টা ফ্রি</th>
+          <th>ফ্রি দাম</th>
+          <th>একশন</th>
+        </tr>
+      </thead>
+      <tbody id="productTableBody">
+        <tr><td colspan="7" style="text-align:center;color:#999;">লোড হচ্ছে...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="toggle-btn-row">
+    <button type="button" class="secondary-btn" onclick="toggleCard('addCard', this)">➕ নতুন প্রোডাক্ট যোগ করুন</button>
+  </div>
+
+  <div class="card" id="addCard" style="display:none;">
+    <h3>➕ নতুন প্রোডাক্ট যোগ করুন</h3>
+    <div class="form-grid">
+      <div class="full-width">
+        <label>প্রোডাক্টের নাম</label>
+        <input type="text" id="productName" placeholder="যেমনঃ লাক্স সাবান">
+      </div>
+      <div>
+        <label>এক কার্টুনে কয় পিস আঁটে</label>
+        <input type="number" id="piecesPerCarton" placeholder="যেমনঃ 72">
+      </div>
+      <div>
+        <label>প্রোডাক্টের দাম (প্রতি কার্টুন)</label>
+        <input type="number" id="productPrice" placeholder="টাকা">
+      </div>
+      <div>
+        <label>পিস বিক্রয় মূল্য</label>
+        <input type="text" id="piecePrice" placeholder="যেমনঃ ৫, ১০, ২০ বা ফ্যামিলি">
+      </div>
+      <div>
+        <label>কয়টা ফ্রি (পিস)</label>
+        <input type="number" id="freeQty" placeholder="যেমনঃ 2" min="0">
+      </div>
+      <div>
+        <label>ফ্রি প্রোডাক্টের দাম</label>
+        <input type="number" id="freePrice" placeholder="টাকা">
+      </div>
+    </div>
+    <button onclick="addProduct()">প্রোডাক্ট যোগ করুন</button>
+    <div id="status"></div>
+  </div>
+
+
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, onSnapshot,
+    deleteDoc, doc, query, orderBy, updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_4SpFqp1wDVUxugj5EO_HGZ-PH5si-ow",
+    authDomain: "products-list-a0210.firebaseapp.com",
+    projectId: "products-list-a0210",
+    storageBucket: "products-list-a0210.firebasestorage.app",
+    messagingSenderId: "878960139999",
+    appId: "1:878960139999:web:5546a9743fefae418dd36a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const productsCol = collection(db, "products");
+
+  // কার্ড দেখানো/লুকানোর ফাংশন (নতুন প্রোডাক্ট ও বাল্ক ইমপোর্ট বাটন)
+  window.toggleCard = function(cardId, btn) {
+    const card = document.getElementById(cardId);
+    const isHidden = card.style.display === "none";
+    card.style.display = isHidden ? "block" : "none";
+    btn.classList.toggle("active", isHidden);
+    if (isHidden) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+
+  // ডুপ্লিকেট প্রোডাক্ট স্বয়ংক্রিয়ভাবে মুছে ফেলার ফাংশন
+  // (দু'বার বাল্ক ইমপোর্ট করার কারণে তৈরি হওয়া ডাবল ডাটা এক-বারের জন্য পরিষ্কার করে দেয়)
+  let dedupInProgress = false;
+  async function removeDuplicateProducts(products) {
+    if (localStorage.getItem("duplicatesCleanedV1") === "1") return;
+    if (dedupInProgress) return;
+    dedupInProgress = true;
+
+    try {
+      const seen = new Set();
+      const toDelete = [];
+      // createdAt অনুযায়ী পুরনো থেকে নতুন ক্রমে সাজিয়ে প্রথমটা রাখা, বাকিগুলো ডুপ্লিকেট হিসেবে মুছে ফেলা
+      const sorted = [...products].sort((a, b) => {
+        const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return ta - tb;
+      });
+
+      for (const p of sorted) {
+        const key = `${(p.name || "").trim().toLowerCase()}|${p.piecesPerCarton}|${p.price}`;
+        if (seen.has(key)) {
+          toDelete.push(p.id);
+        } else {
+          seen.add(key);
+        }
+      }
+
+      for (const id of toDelete) {
+        try { await deleteDoc(doc(db, "products", id)); } catch (e) {}
+      }
+
+      localStorage.setItem("duplicatesCleanedV1", "1");
+    } finally {
+      dedupInProgress = false;
+    }
+  }
+
+  // প্রোডাক্ট যোগ করার ফাংশন
+  window.addProduct = async function() {
+    const name = document.getElementById("productName").value.trim();
+    const pieces = document.getElementById("piecesPerCarton").value;
+    const price = document.getElementById("productPrice").value;
+    const piecePrice = document.getElementById("piecePrice").value.trim();
+    const freeQty = document.getElementById("freeQty").value;
+    const freePrice = document.getElementById("freePrice").value;
+    const statusEl = document.getElementById("status");
+
+    if (!name || !pieces || !price) {
+      statusEl.textContent = "⚠️ নাম, পিস সংখ্যা ও দাম দিতে হবে।";
+      statusEl.style.color = "red";
+      return;
+    }
+
+    try {
+      await addDoc(productsCol, {
+        name: name,
+        piecesPerCarton: Number(pieces),
+        price: Number(price),
+        piecePrice: piecePrice || "",
+        freeQty: freeQty ? Number(freeQty) : 0,
+        freePrice: freePrice ? Number(freePrice) : null,
+        createdAt: new Date()
+      });
+
+      // ফর্ম রিসেট
+      document.getElementById("productName").value = "";
+      document.getElementById("piecesPerCarton").value = "";
+      document.getElementById("productPrice").value = "";
+      document.getElementById("piecePrice").value = "";
+      document.getElementById("freeQty").value = "";
+      document.getElementById("freePrice").value = "";
+
+      statusEl.textContent = "✅ প্রোডাক্ট সফলভাবে যোগ হয়েছে।";
+      statusEl.style.color = "green";
+      setTimeout(() => statusEl.textContent = "", 2500);
+    } catch (err) {
+      statusEl.textContent = "❌ ত্রুটি: " + err.message;
+      statusEl.style.color = "red";
+    }
+  };
+
+  // প্রোডাক্ট ডিলিট করার ফাংশন
+  window.deleteProduct = async function(id) {
+    if (confirm("আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?")) {
+      await deleteDoc(doc(db, "products", id));
+    }
+  };
+
+  // সেলে এডিট করার পর সেভ করার ফাংশন (নাম, পিস, দাম, ফ্রি দাম)
+  window.handleCellEdit = async function(el) {
+    const id = el.dataset.id;
+    const field = el.dataset.field;
+    const type = el.dataset.type;
+    let value = el.textContent.trim();
+
+    if (type === "number") {
+      const num = Number(value);
+      if (value === "" || isNaN(num)) {
+        alert("⚠️ শুধু সংখ্যা লিখুন।");
+        // পুরনো মান ফিরিয়ে আনা
+        const original = allProducts.find(p => p.id === id);
+        el.textContent = original ? (original[field] ?? "") : "";
+        return;
+      }
+      value = num;
+    } else if (field === "name") {
+      if (value === "") {
+        alert("⚠️ নাম খালি রাখা যাবে না।");
+        const original = allProducts.find(p => p.id === id);
+        el.textContent = original ? original[field] : "";
+        return;
+      }
+    }
+    // piecePrice-এর মতো ফ্রি-টেক্সট ফিল্ড খালি রাখা যাবে
+
+    try {
+      await updateDoc(doc(db, "products", id), { [field]: value });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  // টেবিল রেন্ডার করার ফাংশন (সার্চ ও পিস বিক্রয় মূল্য ফিল্টার সহ)
+  let allProducts = [];
+  let activePieceFilter = null;
+
+  // বাংলা সংখ্যাকে ইংরেজি সংখ্যায় রূপান্তর করার ফাংশন
+  function bengaliToEnglishDigits(str) {
+    const map = { "০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9" };
+    return (str || "").toString().replace(/[০-৯]/g, (d) => map[d]);
+  }
+
+  // পিস বিক্রয় মূল্যকে সংখ্যায় রূপান্তর করার ফাংশন (যদি সম্ভব হয়)
+  function parsePiecePriceNumber(val) {
+    const s = bengaliToEnglishDigits(val).trim();
+    const num = parseFloat(s);
+    return num;
+  }
+
+  // "৫ টাকার" / "১০ টাকার" / "২০ টাকার" / "ফ্যামিলি" বাটনে ক্লিক করলে ফিল্টার করার ফাংশন
+  window.filterByPiecePrice = function(value, btn) {
+    if (activePieceFilter === value) {
+      activePieceFilter = null;
+      btn.classList.remove("active");
+    } else {
+      activePieceFilter = value;
+      document.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+    const searchEl = document.getElementById("searchInput");
+    renderTable(searchEl ? searchEl.value : "");
+  };
+
+  window.renderTable = function(filterText) {
+    const tbody = document.getElementById("productTableBody");
+    const term = (filterText || "").trim().toLowerCase();
+
+    let list = allProducts;
+
+    if (activePieceFilter) {
+      if (activePieceFilter === "ফ্যামিলি") {
+        // ২০ টাকার বেশি পিস বিক্রয়মূল্যের যেকোনো প্রোডাক্ট স্বয়ংক্রিয়ভাবে ফ্যামিলি প্যাকে দেখাবে,
+        // পাশাপাশি যেগুলোতে সরাসরি "ফ্যামিলি" লেখা আছে সেগুলোও থাকবে
+        list = list.filter((d) => {
+          const raw = (d.piecePrice || "").toString().trim();
+          if (raw === "ফ্যামিলি") return true;
+          const num = parsePiecePriceNumber(raw);
+          return !isNaN(num) && num > 20;
+        });
+      } else {
+        list = list.filter((d) => (d.piecePrice || "").toString().trim() === activePieceFilter);
+      }
+    }
+
+    if (term) {
+      list = list.filter((d) => {
+        const haystack = [
+          d.name,
+          d.piecesPerCarton,
+          d.price,
+          d.piecePrice,
+          d.freeQty,
+          d.freePrice
+        ].join(" ").toLowerCase();
+        return haystack.includes(term);
+      });
+    }
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#999;">কোনো প্রোডাক্ট পাওয়া যায়নি</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = "";
+    list.forEach((d) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td contenteditable="true" data-id="${d.id}" data-field="name" onblur="handleCellEdit(this)">${d.name}</td>
+        <td contenteditable="true" data-id="${d.id}" data-field="piecesPerCarton" data-type="number" onblur="handleCellEdit(this)">${d.piecesPerCarton}</td>
+        <td contenteditable="true" data-id="${d.id}" data-field="price" data-type="number" onblur="handleCellEdit(this)">${d.price}</td>
+        <td contenteditable="true" data-id="${d.id}" data-field="piecePrice" onblur="handleCellEdit(this)">${d.piecePrice ?? ""}</td>
+        <td contenteditable="true" data-id="${d.id}" data-field="freeQty" data-type="number" onblur="handleCellEdit(this)">${d.freeQty ?? 0}</td>
+        <td contenteditable="true" data-id="${d.id}" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)">${d.freePrice ?? 0}</td>
+        <td><button class="del-btn" onclick="deleteProduct('${d.id}')">মুছুন</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  };
+
+  // রিয়েল-টাইম লিস্টেনার — তালিকা লোড ও রেন্ডার
+  const q = query(productsCol, orderBy("createdAt", "desc"));
+  onSnapshot(q, (snapshot) => {
+    allProducts = [];
+    snapshot.forEach((docSnap) => {
+      allProducts.push({ id: docSnap.id, ...docSnap.data() });
+    });
+    const searchEl = document.getElementById("searchInput");
+    renderTable(searchEl ? searchEl.value : "");
+    removeDuplicateProducts(allProducts);
+  }, (error) => {
+    document.getElementById("productTableBody").innerHTML =
+      `<tr><td colspan="7" style="text-align:center;color:red;">Firebase কনফিগার করা হয়নি বা ত্রুটি: ${error.message}</td></tr>`;
+  });
+
+  // সার্ভিস ওয়ার্কার রেজিস্টার করা হয় — এটি ছাড়া "ইনস্টল" অপশন আসবে না
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch((err) => {
+        console.log("সার্ভিস ওয়ার্কার রেজিস্ট্রেশন ব্যর্থ:", err);
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
