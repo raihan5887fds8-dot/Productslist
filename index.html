@@ -4,16 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>প্রোডাক্ট তালিকা</title>
-
-<!-- PWA ইনস্টলের জন্য প্রয়োজনীয় ট্যাগ -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1a4d8f">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="প্রোডাক্ট তালিকা">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <style>
   * { box-sizing: border-box; }
   body {
@@ -455,7 +445,13 @@
           return !isNaN(num) && num > 20;
         });
       } else {
-        list = list.filter((d) => (d.piecePrice || "").toString().trim() === activePieceFilter);
+        const filterNum = parsePiecePriceNumber(activePieceFilter);
+        list = list.filter((d) => {
+          const raw = (d.piecePrice || "").toString().trim();
+          if (raw === activePieceFilter) return true; // হুবহু মিল থাকলে সরাসরি মিলবে
+          const num = parsePiecePriceNumber(raw); // সংখ্যায় রূপান্তর করে তুলনা (৫ / 5 / "৫ টাকা" সবই ধরবে)
+          return !isNaN(num) && !isNaN(filterNum) && num === filterNum;
+        });
       }
     }
 
@@ -508,15 +504,6 @@
     document.getElementById("productTableBody").innerHTML =
       `<tr><td colspan="7" style="text-align:center;color:red;">Firebase কনফিগার করা হয়নি বা ত্রুটি: ${error.message}</td></tr>`;
   });
-
-  // সার্ভিস ওয়ার্কার রেজিস্টার করা হয় — এটি ছাড়া "ইনস্টল" অপশন আসবে না
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch((err) => {
-        console.log("সার্ভিস ওয়ার্কার রেজিস্ট্রেশন ব্যর্থ:", err);
-      });
-    });
-  }
 </script>
 
 </body>
