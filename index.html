@@ -4,204 +4,408 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>প্রোডাক্ট তালিকা</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --ink: #103c3d;
+    --ink-soft: #1c5152;
+    --paper: #f2f6f4;
+    --card: #ffffff;
+    --gold: #d6a13a;
+    --gold-deep: #b8862a;
+    --rule: #e2e8e5;
+    --muted: #62726f;
+    --text: #1b2523;
+    --brick: #ab4a34;
+    --brick-soft: #f7e9e5;
+    --sage: #4c7a5d;
+    --tag5: #4c7a5d;
+    --tag10: #2f6f8f;
+    --tag20: #b8862a;
+    --tagfam: #7a4f9e;
+    --tagother: #62726f;
+    --radius: 14px;
+    --shadow: 0 3px 14px rgba(16,60,61,0.08), 0 1px 3px rgba(16,60,61,0.06);
+  }
+
   * { box-sizing: border-box; }
+
   body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #f4f6f8;
+    font-family: 'Hind Siliguri', 'Segoe UI', Arial, sans-serif;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 100% 0%, rgba(214,161,58,0.08) 0%, transparent 45%),
+      radial-gradient(circle at 0% 100%, rgba(16,60,61,0.05) 0%, transparent 40%);
+    background-attachment: fixed;
     margin: 0;
-    padding: 20px;
-    color: #222;
+    padding: 18px;
+    color: var(--text);
   }
-  h1 {
+
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* ---------- সাইনবোর্ড হেডার ---------- */
+  .shop-header {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 18px;
     text-align: center;
-    color: #1a4d8f;
-    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
   }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
+  .shop-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg, rgba(214,161,58,0.10) 0px, rgba(214,161,58,0.10) 2px,
+      transparent 2px, transparent 14px
+    );
+    pointer-events: none;
   }
+  .shop-header h1 {
+    position: relative;
+    margin: 0;
+    font-family: 'Baloo Da 2', 'Hind Siliguri', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: 0.2px;
+  }
+  .shop-header .tagline {
+    position: relative;
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+
   .card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    padding: 20px;
-    margin-bottom: 20px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 18px 20px;
+    margin-bottom: 18px;
+    border-top: 3px solid var(--gold);
   }
+  .card h3 {
+    font-family: 'Baloo Da 2', sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
   label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     display: block;
     margin-bottom: 4px;
-    color: #444;
+    color: var(--muted);
   }
-  input[type="text"], input[type="number"] {
+  input[type="text"], input[type="number"], select {
     width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 9px 11px;
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
     font-size: 14px;
+    background: #fff;
+    font-family: inherit;
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, select:focus {
+    outline: none;
+    border-color: var(--ink-soft);
+    box-shadow: 0 0 0 3px rgba(28,81,82,0.12);
   }
   .full-width { grid-column: 1 / -1; }
-  .checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .checkbox-row input { width: 18px; height: 18px; }
+
   button {
-    background: #1a4d8f;
+    background: var(--ink);
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 11px 20px;
+    border-radius: 9px;
     font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     margin-top: 10px;
+    transition: background 0.15s, transform 0.1s;
   }
-  button:hover { background: #143d70; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
+  button:hover { background: var(--ink-soft); }
+  button:active { transform: scale(0.98); }
+  button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
   th, td {
-    padding: 10px;
+    padding: 11px 10px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--rule);
     font-size: 14px;
   }
   th {
-    background: #1a4d8f;
+    background: var(--ink);
     color: #fff;
+    font-family: 'Baloo Da 2', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    border-bottom: 3px solid var(--gold);
   }
-  tr:hover { background: #f9f9f9; }
+  th:first-child { border-radius: 8px 0 0 0; }
+  th:last-child { border-radius: 0 8px 0 0; }
+  tbody tr:nth-child(even) { background: #f8faf9; }
+  tbody tr:hover { background: #eef5f2; }
+
   .del-btn {
-    background: #d9534f;
-    padding: 5px 12px;
+    background: var(--brick);
+    padding: 6px 13px;
     font-size: 13px;
   }
-  .del-btn:hover { background: #b52b27; }
-  .badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    color: #fff;
-  }
-  .badge-yes { background: #28a745; }
-  .badge-no { background: #999; }
-  #status { text-align: center; font-size: 14px; color: #777; margin-top: 10px; }
-  .config-note {
-    background: #fff3cd;
-    border: 1px solid #ffe08a;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
+  .del-btn:hover { background: #8f3a28; }
+
+  #status { text-align: center; font-size: 14px; color: var(--muted); margin-top: 10px; }
+
   .search-box {
     width: 100%;
-    padding: 10px 14px;
-    border: 2px solid #1a4d8f;
-    border-radius: 8px;
+    padding: 11px 15px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
     font-size: 15px;
-    margin-bottom: 4px;
+    margin-bottom: 14px;
+    font-family: inherit;
   }
-  td[contenteditable="true"] {
-    cursor: text;
-    border-radius: 4px;
+  .search-box:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16,60,61,0.15);
   }
-  td[contenteditable="true"]:hover {
-    background: #f0f6ff;
-  }
+
+  td[contenteditable="true"] { cursor: text; border-radius: 4px; }
+  td[contenteditable="true"]:hover { background: #eef5f2; }
   td[contenteditable="true"]:focus {
-    outline: 2px solid #1a4d8f;
-    background: #eaf2ff;
+    outline: 2px solid var(--ink-soft);
+    background: #e3f0ec;
   }
-  .edit-hint {
-    font-size: 12px;
-    color: #888;
-    margin: 4px 0 10px;
-  }
+
   .toggle-btn-row {
     display: flex;
     gap: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     flex-wrap: wrap;
   }
   .secondary-btn {
     background: #fff;
-    color: #1a4d8f;
-    border: 2px solid #1a4d8f;
+    color: var(--ink);
+    border: 2px solid var(--ink);
     flex: 1;
     min-width: 200px;
   }
-  .secondary-btn:hover { background: #eaf2ff; }
-  .secondary-btn.active {
-    background: #1a4d8f;
-    color: #fff;
-  }
+  .secondary-btn:hover { background: #eef5f2; }
+  .secondary-btn.active { background: var(--ink); color: #fff; }
+
+  /* ---------- প্রাইস-ট্যাগ ফিল্টার চিপ ---------- */
   .filter-btn-row {
     display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 10px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
   }
   .filter-chip {
-    background: #eaf2ff;
-    color: #1a4d8f;
-    border: 2px solid #cfe0fb;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #fff;
+    color: var(--text);
+    border: 1.5px solid var(--rule);
+    padding: 8px 14px 8px 10px;
+    border-radius: 999px;
+    font-size: 13px;
     font-weight: 600;
+    font-family: inherit;
     cursor: pointer;
     margin-top: 0;
+    transition: all 0.15s;
   }
-  .filter-chip:hover { background: #dbe9ff; }
+  .filter-chip .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--chip-color, var(--muted));
+  }
+  .filter-chip[data-value="৫"] { --chip-color: var(--tag5); }
+  .filter-chip[data-value="১০"] { --chip-color: var(--tag10); }
+  .filter-chip[data-value="২০"] { --chip-color: var(--tag20); }
+  .filter-chip[data-value="ফ্যামিলি"] { --chip-color: var(--tagfam); }
+  .filter-chip[data-value="অন্যান্য"] { --chip-color: var(--tagother); }
+  .filter-chip:hover { border-color: var(--chip-color, var(--ink)); background: #fafcfb; }
   .filter-chip.active {
-    background: #1a4d8f;
-    border-color: #1a4d8f;
+    background: var(--chip-color, var(--ink));
+    border-color: var(--chip-color, var(--ink));
     color: #fff;
+  }
+  .filter-chip.active .dot { background: #fff; }
+
+  .product-name-cell {
+    cursor: pointer;
+    color: var(--ink-soft);
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s;
+  }
+  .product-name-cell:hover {
+    text-decoration-color: var(--ink-soft);
+    background: #eef5f2;
+  }
+  .unit-badge {
+    display: inline-block;
+    background: #eef5f2;
+    color: var(--ink-soft);
+    border: 1px solid #cfe3dc;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+
+  /* ---------- পপআপ ---------- */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(16,32,31,0.55);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 26px 22px 22px;
+    width: 100%;
+    max-width: 420px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    border-top: 4px solid var(--gold);
+  }
+  .modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    color: var(--muted);
+    border: none;
+    font-size: 18px;
+    padding: 4px 8px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .modal-close:hover { color: var(--text); background: #f0f0f0; border-radius: 6px; }
+
+  #modalProductName {
+    font-family: 'Baloo Da 2', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 18px;
+    padding: 4px 6px;
+    border-radius: 6px;
+  }
+  #modalProductName:hover, #modalProductName:focus {
+    background: #eef5f2;
+    outline: 2px solid var(--ink-soft);
+  }
+
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label { color: var(--muted); }
+  .modal-field div[contenteditable] {
+    padding: 9px 11px;
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
+    font-size: 14px;
+    min-height: 20px;
+  }
+  .modal-field div[contenteditable]:hover { background: #eef5f2; }
+  .modal-field div[contenteditable]:focus {
+    outline: 2px solid var(--ink-soft);
+    background: #e3f0ec;
+  }
+
+  .modal-danger-zone {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--rule);
+    text-align: center;
+  }
+  .danger-link {
+    background: none;
+    color: var(--brick);
+    border: none;
+    font-size: 13px;
+    padding: 6px 10px;
+    margin: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .danger-link:hover { background: var(--brick-soft); border-radius: 6px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  @media (max-width: 480px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .shop-header h1 { font-size: 22px; }
   }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>📦 প্রোডাক্ট তালিকা</h1>
+  <div class="shop-header">
+    <h1>📦 প্রোডাক্ট তালিকা</h1>
+    <p class="tagline">দাম ও স্টক এক নজরে</p>
+  </div>
 
   <div class="card">
-    <h3>📋 সব প্রোডাক্ট</h3>
     <div class="filter-btn-row" id="filterBtnRow">
-      <button type="button" class="filter-chip" data-value="৫" onclick="filterByPiecePrice('৫', this)">৫ টাকার</button>
-      <button type="button" class="filter-chip" data-value="১০" onclick="filterByPiecePrice('১০', this)">১০ টাকার</button>
-      <button type="button" class="filter-chip" data-value="২০" onclick="filterByPiecePrice('২০', this)">২০ টাকার</button>
-      <button type="button" class="filter-chip" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)">ফ্যামিলি</button>
+      <button type="button" class="filter-chip" data-value="৫" onclick="filterByPiecePrice('৫', this)"><span class="dot"></span>৫ টাকার</button>
+      <button type="button" class="filter-chip" data-value="১০" onclick="filterByPiecePrice('১০', this)"><span class="dot"></span>১০ টাকার</button>
+      <button type="button" class="filter-chip" data-value="২০" onclick="filterByPiecePrice('২০', this)"><span class="dot"></span>২০ টাকার</button>
+      <button type="button" class="filter-chip" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামিলি</button>
+      <button type="button" class="filter-chip" data-value="অন্যান্য" onclick="filterByPiecePrice('অন্যান্য', this)"><span class="dot"></span>অন্যান্য</button>
     </div>
     <input type="text" id="searchInput" class="search-box" placeholder="🔍 নাম, দাম, পিস — যেকোনো কিছু দিয়ে সার্চ করুন..." oninput="renderTable(this.value)">
-    <div class="edit-hint">💡 টেবিলের যেকোনো ঘরে ক্লিক করে সরাসরি এডিট করুন, তারপর বাইরে ক্লিক করলে সেভ হয়ে যাবে।</div>
     <table>
       <thead>
         <tr>
           <th>নাম</th>
-          <th>প্রতি কার্টুনে পিস</th>
           <th>দাম</th>
-          <th>পিস বিক্রয় মূল্য</th>
-          <th>কয়টা ফ্রি</th>
           <th>ফ্রি দাম</th>
-          <th>একশন</th>
         </tr>
       </thead>
       <tbody id="productTableBody">
-        <tr><td colspan="7" style="text-align:center;color:#999;">লোড হচ্ছে...</td></tr>
+        <tr><td colspan="3" style="text-align:center;color:#999;">লোড হচ্ছে...</td></tr>
       </tbody>
     </table>
   </div>
@@ -217,17 +421,36 @@
         <label>প্রোডাক্টের নাম</label>
         <input type="text" id="productName" placeholder="যেমনঃ লাক্স সাবান">
       </div>
+      <div class="full-width">
+        <label>প্যাকেজিং ধরন</label>
+        <select id="unitType" onchange="syncUnitLabels(this.value)">
+          <option value="কার্টুন">কার্টুন</option>
+          <option value="বক্স">বক্স</option>
+          <option value="পলি">পলি</option>
+        </select>
+      </div>
       <div>
-        <label>এক কার্টুনে কয় পিস আঁটে</label>
+        <label id="piecesPerCartonLabel">এক কার্টুনে কয় পিস আঁটে</label>
         <input type="number" id="piecesPerCarton" placeholder="যেমনঃ 72">
       </div>
       <div>
-        <label>প্রোডাক্টের দাম (প্রতি কার্টুন)</label>
+        <label id="productPriceLabel">প্রোডাক্টের দাম (প্রতি কার্টুন)</label>
         <input type="number" id="productPrice" placeholder="টাকা">
       </div>
       <div>
         <label>পিস বিক্রয় মূল্য</label>
         <input type="text" id="piecePrice" placeholder="যেমনঃ ৫, ১০, ২০ বা ফ্যামিলি">
+      </div>
+      <div>
+        <label>ফিল্টার বাটন (কোনটায় দেখাবে)</label>
+        <select id="priceCategory">
+          <option value="">-- বাছাই করুন --</option>
+          <option value="৫">৫ টাকার</option>
+          <option value="১০">১০ টাকার</option>
+          <option value="২০">২০ টাকার</option>
+          <option value="ফ্যামিলি">ফ্যামিলি</option>
+          <option value="অন্যান্য">অন্যান্য</option>
+        </select>
       </div>
       <div>
         <label>কয়টা ফ্রি (পিস)</label>
@@ -242,17 +465,58 @@
     <div id="status"></div>
   </div>
 
-
 </div>
 
-<!-- Firebase SDK -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getFirestore, collection, addDoc, onSnapshot,
-    deleteDoc, doc, query, orderBy, updateDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<!-- প্রোডাক্ট বিস্তারিত পপআপ -->
+<div id="detailModal" class="modal-overlay" onclick="closeDetailsOnOverlay(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button type="button" class="modal-close" onclick="closeDetails()">✕</button>
+    <h3 id="modalProductName" contenteditable="true" data-field="name" onblur="handleCellEdit(this)"></h3>
 
+    <div class="modal-field">
+      <label>প্যাকেজিং ধরন</label>
+      <select id="modalUnitType" onchange="handleUnitTypeChange(this)">
+        <option value="কার্টুন">কার্টুন</option>
+        <option value="বক্স">বক্স</option>
+        <option value="পলি">পলি</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label id="modalPiecesLabel">প্রতি কার্টুনে পিস</label>
+      <div id="modalPieces" contenteditable="true" data-field="piecesPerCarton" data-type="number" onblur="handleCellEdit(this)"></div>
+    </div>
+    <div class="modal-field">
+      <label>পিস বিক্রয় মূল্য</label>
+      <div id="modalPiecePrice" contenteditable="true" data-field="piecePrice" onblur="handleCellEdit(this)"></div>
+    </div>
+    <div class="modal-field">
+      <label>ফিল্টার বাটন (কোনটায় দেখাবে)</label>
+      <select id="modalPriceCategory" onchange="handleCategoryChange(this)">
+        <option value="">-- বাছাই করুন --</option>
+        <option value="৫">৫ টাকার</option>
+        <option value="১০">১০ টাকার</option>
+        <option value="২০">২০ টাকার</option>
+        <option value="ফ্যামিলি">ফ্যামিলি</option>
+        <option value="অন্যান্য">অন্যান্য</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>কয়টা ফ্রি</label>
+      <div id="modalFreeQty" contenteditable="true" data-field="freeQty" data-type="number" onblur="handleCellEdit(this)"></div>
+    </div>
+
+    <div class="modal-danger-zone">
+      <button type="button" class="danger-link" onclick="deleteFromModal()">🗑️ এই প্রোডাক্টটি ডিলিট করুন</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Firebase SDK (compat build: works with a plain <script>, ব্রাউজারে সরাসরি ফাইল ওপেন করলেও চলবে, কোনো লোকাল সার্ভার লাগবে না) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyB_4SpFqp1wDVUxugj5EO_HGZ-PH5si-ow",
     authDomain: "products-list-a0210.firebaseapp.com",
@@ -262,9 +526,9 @@
     appId: "1:878960139999:web:5546a9743fefae418dd36a"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const productsCol = collection(db, "products");
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const productsCol = db.collection("products");
 
   // কার্ড দেখানো/লুকানোর ফাংশন (নতুন প্রোডাক্ট ও বাল্ক ইমপোর্ট বাটন)
   window.toggleCard = function(cardId, btn) {
@@ -273,6 +537,12 @@
     card.style.display = isHidden ? "block" : "none";
     btn.classList.toggle("active", isHidden);
     if (isHidden) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+
+  // প্যাকেজিং ধরন (কার্টুন/বক্স/পলি) অনুযায়ী ফর্মের লেবেল বদলানোর ফাংশন
+  window.syncUnitLabels = function(unitType) {
+    document.getElementById("piecesPerCartonLabel").textContent = `এক ${unitType}-এ কয় পিস আঁটে`;
+    document.getElementById("productPriceLabel").textContent = `প্রোডাক্টের দাম (প্রতি ${unitType})`;
   };
 
   // ডুপ্লিকেট প্রোডাক্ট স্বয়ংক্রিয়ভাবে মুছে ফেলার ফাংশন
@@ -303,7 +573,7 @@
       }
 
       for (const id of toDelete) {
-        try { await deleteDoc(doc(db, "products", id)); } catch (e) {}
+        try { await productsCol.doc(id).delete(); } catch (e) {}
       }
 
       localStorage.setItem("duplicatesCleanedV1", "1");
@@ -315,9 +585,11 @@
   // প্রোডাক্ট যোগ করার ফাংশন
   window.addProduct = async function() {
     const name = document.getElementById("productName").value.trim();
+    const unitType = document.getElementById("unitType").value;
     const pieces = document.getElementById("piecesPerCarton").value;
     const price = document.getElementById("productPrice").value;
     const piecePrice = document.getElementById("piecePrice").value.trim();
+    const priceCategory = document.getElementById("priceCategory").value;
     const freeQty = document.getElementById("freeQty").value;
     const freePrice = document.getElementById("freePrice").value;
     const statusEl = document.getElementById("status");
@@ -329,11 +601,13 @@
     }
 
     try {
-      await addDoc(productsCol, {
+      await productsCol.add({
         name: name,
+        unitType: unitType,
         piecesPerCarton: Number(pieces),
         price: Number(price),
         piecePrice: piecePrice || "",
+        priceCategory: priceCategory || "",
         freeQty: freeQty ? Number(freeQty) : 0,
         freePrice: freePrice ? Number(freePrice) : null,
         createdAt: new Date()
@@ -341,9 +615,12 @@
 
       // ফর্ম রিসেট
       document.getElementById("productName").value = "";
+      document.getElementById("unitType").value = "কার্টুন";
+      syncUnitLabels("কার্টুন");
       document.getElementById("piecesPerCarton").value = "";
       document.getElementById("productPrice").value = "";
       document.getElementById("piecePrice").value = "";
+      document.getElementById("priceCategory").value = "";
       document.getElementById("freeQty").value = "";
       document.getElementById("freePrice").value = "";
 
@@ -359,7 +636,7 @@
   // প্রোডাক্ট ডিলিট করার ফাংশন
   window.deleteProduct = async function(id) {
     if (confirm("আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?")) {
-      await deleteDoc(doc(db, "products", id));
+      await productsCol.doc(id).delete();
     }
   };
 
@@ -391,36 +668,24 @@
     // piecePrice-এর মতো ফ্রি-টেক্সট ফিল্ড খালি রাখা যাবে
 
     try {
-      await updateDoc(doc(db, "products", id), { [field]: value });
+      await productsCol.doc(id).update({ [field]: value });
     } catch (err) {
       alert("❌ আপডেট ব্যর্থ: " + err.message);
     }
   };
 
-  // টেবিল রেন্ডার করার ফাংশন (সার্চ ও পিস বিক্রয় মূল্য ফিল্টার সহ)
+  // টেবিল রেন্ডার করার ফাংশন (সার্চ ও ক্যাটাগরি ফিল্টার সহ)
   let allProducts = [];
-  let activePieceFilter = null;
-
-  // বাংলা সংখ্যাকে ইংরেজি সংখ্যায় রূপান্তর করার ফাংশন
-  function bengaliToEnglishDigits(str) {
-    const map = { "০":"0","১":"1","২":"2","৩":"3","৪":"4","৫":"5","৬":"6","৭":"7","৮":"8","৯":"9" };
-    return (str || "").toString().replace(/[০-৯]/g, (d) => map[d]);
-  }
-
-  // পিস বিক্রয় মূল্যকে সংখ্যায় রূপান্তর করার ফাংশন (যদি সম্ভব হয়)
-  function parsePiecePriceNumber(val) {
-    const s = bengaliToEnglishDigits(val).trim();
-    const num = parseFloat(s);
-    return num;
-  }
+  let activeCategoryFilter = null;
 
   // "৫ টাকার" / "১০ টাকার" / "২০ টাকার" / "ফ্যামিলি" বাটনে ক্লিক করলে ফিল্টার করার ফাংশন
+  // (প্রতিটা প্রোডাক্টে যে ক্যাটাগরি ম্যানুয়ালি সেট করা আছে, তার ভিত্তিতে ফিল্টার হবে — দাম দেখে না)
   window.filterByPiecePrice = function(value, btn) {
-    if (activePieceFilter === value) {
-      activePieceFilter = null;
+    if (activeCategoryFilter === value) {
+      activeCategoryFilter = null;
       btn.classList.remove("active");
     } else {
-      activePieceFilter = value;
+      activeCategoryFilter = value;
       document.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     }
@@ -434,34 +699,19 @@
 
     let list = allProducts;
 
-    if (activePieceFilter) {
-      if (activePieceFilter === "ফ্যামিলি") {
-        // ২০ টাকার বেশি পিস বিক্রয়মূল্যের যেকোনো প্রোডাক্ট স্বয়ংক্রিয়ভাবে ফ্যামিলি প্যাকে দেখাবে,
-        // পাশাপাশি যেগুলোতে সরাসরি "ফ্যামিলি" লেখা আছে সেগুলোও থাকবে
-        list = list.filter((d) => {
-          const raw = (d.piecePrice || "").toString().trim();
-          if (raw === "ফ্যামিলি") return true;
-          const num = parsePiecePriceNumber(raw);
-          return !isNaN(num) && num > 20;
-        });
-      } else {
-        const filterNum = parsePiecePriceNumber(activePieceFilter);
-        list = list.filter((d) => {
-          const raw = (d.piecePrice || "").toString().trim();
-          if (raw === activePieceFilter) return true; // হুবহু মিল থাকলে সরাসরি মিলবে
-          const num = parsePiecePriceNumber(raw); // সংখ্যায় রূপান্তর করে তুলনা (৫ / 5 / "৫ টাকা" সবই ধরবে)
-          return !isNaN(num) && !isNaN(filterNum) && num === filterNum;
-        });
-      }
+    if (activeCategoryFilter) {
+      list = list.filter((d) => (d.priceCategory || "") === activeCategoryFilter);
     }
 
     if (term) {
       list = list.filter((d) => {
         const haystack = [
           d.name,
+          d.unitType,
           d.piecesPerCarton,
           d.price,
           d.piecePrice,
+          d.priceCategory,
           d.freeQty,
           d.freePrice
         ].join(" ").toLowerCase();
@@ -470,7 +720,7 @@
     }
 
     if (list.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#999;">কোনো প্রোডাক্ট পাওয়া যায়নি</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#999;">কোনো প্রোডাক্ট পাওয়া যায়নি</td></tr>`;
       return;
     }
 
@@ -478,21 +728,92 @@
     list.forEach((d) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td contenteditable="true" data-id="${d.id}" data-field="name" onblur="handleCellEdit(this)">${d.name}</td>
-        <td contenteditable="true" data-id="${d.id}" data-field="piecesPerCarton" data-type="number" onblur="handleCellEdit(this)">${d.piecesPerCarton}</td>
+        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${d.unitType || "কার্টুন"}</span></td>
         <td contenteditable="true" data-id="${d.id}" data-field="price" data-type="number" onblur="handleCellEdit(this)">${d.price}</td>
-        <td contenteditable="true" data-id="${d.id}" data-field="piecePrice" onblur="handleCellEdit(this)">${d.piecePrice ?? ""}</td>
-        <td contenteditable="true" data-id="${d.id}" data-field="freeQty" data-type="number" onblur="handleCellEdit(this)">${d.freeQty ?? 0}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)">${d.freePrice ?? 0}</td>
-        <td><button class="del-btn" onclick="deleteProduct('${d.id}')">মুছুন</button></td>
       `;
       tbody.appendChild(row);
     });
   };
 
+  // পপআপে প্রোডাক্টের বিস্তারিত দেখানো
+  let currentModalProductId = null;
+  window.openDetails = function(id) {
+    const p = allProducts.find((x) => x.id === id);
+    if (!p) return;
+    currentModalProductId = id;
+
+    const nameEl = document.getElementById("modalProductName");
+    nameEl.textContent = p.name;
+    nameEl.dataset.id = id;
+
+    const unitType = p.unitType || "কার্টুন";
+    const unitTypeEl = document.getElementById("modalUnitType");
+    unitTypeEl.value = unitType;
+    unitTypeEl.dataset.id = id;
+    document.getElementById("modalPiecesLabel").textContent = `প্রতি ${unitType}-এ পিস`;
+
+    const piecesEl = document.getElementById("modalPieces");
+    piecesEl.textContent = p.piecesPerCarton ?? "";
+    piecesEl.dataset.id = id;
+
+    const piecePriceEl = document.getElementById("modalPiecePrice");
+    piecePriceEl.textContent = p.piecePrice ?? "";
+    piecePriceEl.dataset.id = id;
+
+    const categoryEl = document.getElementById("modalPriceCategory");
+    categoryEl.value = p.priceCategory || "";
+    categoryEl.dataset.id = id;
+
+    const freeQtyEl = document.getElementById("modalFreeQty");
+    freeQtyEl.textContent = p.freeQty ?? 0;
+    freeQtyEl.dataset.id = id;
+
+    document.getElementById("detailModal").classList.add("open");
+  };
+
+  // পপআপে প্যাকেজিং ধরন বদলালে সেভ করা ও লেবেল আপডেট করার ফাংশন
+  window.handleUnitTypeChange = async function(selectEl) {
+    const id = selectEl.dataset.id;
+    const value = selectEl.value;
+    document.getElementById("modalPiecesLabel").textContent = `প্রতি ${value}-এ পিস`;
+    try {
+      await productsCol.doc(id).update({ unitType: value });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  // পপআপে ফিল্টার ক্যাটাগরি বদলালে সেভ করার ফাংশন
+  window.handleCategoryChange = async function(selectEl) {
+    const id = selectEl.dataset.id;
+    const value = selectEl.value;
+    try {
+      await productsCol.doc(id).update({ priceCategory: value });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  window.closeDetails = function() {
+    document.getElementById("detailModal").classList.remove("open");
+    currentModalProductId = null;
+  };
+
+  window.closeDetailsOnOverlay = function(e) {
+    if (e.target.id === "detailModal") closeDetails();
+  };
+
+  window.deleteFromModal = async function() {
+    if (!currentModalProductId) return;
+    if (confirm("আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?")) {
+      await productsCol.doc(currentModalProductId).delete();
+      closeDetails();
+    }
+  };
+
   // রিয়েল-টাইম লিস্টেনার — তালিকা লোড ও রেন্ডার
-  const q = query(productsCol, orderBy("createdAt", "desc"));
-  onSnapshot(q, (snapshot) => {
+  productsCol.orderBy("createdAt", "desc").onSnapshot((snapshot) => {
     allProducts = [];
     snapshot.forEach((docSnap) => {
       allProducts.push({ id: docSnap.id, ...docSnap.data() });
@@ -502,7 +823,7 @@
     removeDuplicateProducts(allProducts);
   }, (error) => {
     document.getElementById("productTableBody").innerHTML =
-      `<tr><td colspan="7" style="text-align:center;color:red;">Firebase কনফিগার করা হয়নি বা ত্রুটি: ${error.message}</td></tr>`;
+      `<tr><td colspan="3" style="text-align:center;color:red;">Firebase কনফিগার করা হয়নি বা ত্রুটি: ${error.message}</td></tr>`;
   });
 </script>
 
