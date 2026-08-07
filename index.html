@@ -4,30 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>প্রোডাক্ট তালিকা</title>
+
+<!-- ===== PWA সেটআপ শুরু ===== -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#17120f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="প্রোডাক্ট তালিকা">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<!-- ===== PWA সেটআপ শেষ ===== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #103c3d;
-    --ink-soft: #1c5152;
-    --paper: #f2f6f4;
+    --ink: #17120f;
+    --ink-soft: #2b201a;
+    --paper: #f7f1ee;
     --card: #ffffff;
-    --gold: #d6a13a;
-    --gold-deep: #b8862a;
-    --rule: #e2e8e5;
-    --muted: #62726f;
-    --text: #1b2523;
-    --brick: #ab4a34;
-    --brick-soft: #f7e9e5;
+    --gold: #d1362f;
+    --gold-deep: #a52620;
+    --rule: #ece1dd;
+    --muted: #766560;
+    --text: #221714;
+    --brick: #d1362f;
+    --brick-soft: #f9e4e2;
     --sage: #4c7a5d;
     --tag5: #4c7a5d;
     --tag10: #2f6f8f;
-    --tag20: #b8862a;
+    --tag20: #a52620;
     --tagfam: #7a4f9e;
-    --tagother: #62726f;
+    --tagother: #766560;
     --radius: 14px;
-    --shadow: 0 3px 14px rgba(16,60,61,0.08), 0 1px 3px rgba(16,60,61,0.06);
+    --shadow: 0 3px 14px rgba(23,18,15,0.10), 0 1px 3px rgba(23,18,15,0.08);
   }
 
   * { box-sizing: border-box; }
@@ -36,8 +48,8 @@
     font-family: 'Hind Siliguri', 'Segoe UI', Arial, sans-serif;
     background: var(--paper);
     background-image:
-      radial-gradient(circle at 100% 0%, rgba(214,161,58,0.08) 0%, transparent 45%),
-      radial-gradient(circle at 0% 100%, rgba(16,60,61,0.05) 0%, transparent 40%);
+      radial-gradient(circle at 100% 0%, rgba(209,54,47,0.08) 0%, transparent 45%),
+      radial-gradient(circle at 0% 100%, rgba(23,18,15,0.05) 0%, transparent 40%);
     background-attachment: fixed;
     margin: 0;
     padding: 18px;
@@ -62,7 +74,7 @@
     position: absolute;
     inset: 0;
     background-image: repeating-linear-gradient(
-      -45deg, rgba(214,161,58,0.10) 0px, rgba(214,161,58,0.10) 2px,
+      -45deg, rgba(209,54,47,0.10) 0px, rgba(209,54,47,0.10) 2px,
       transparent 2px, transparent 14px
     );
     pointer-events: none;
@@ -173,7 +185,7 @@
     padding: 6px 13px;
     font-size: 13px;
   }
-  .del-btn:hover { background: #8f3a28; }
+  .del-btn:hover { background: #7d1f1a; }
 
   #status { text-align: center; font-size: 14px; color: var(--muted); margin-top: 10px; }
 
@@ -188,7 +200,7 @@
   }
   .search-box:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(16,60,61,0.15);
+    box-shadow: 0 0 0 3px rgba(23,18,15,0.15);
   }
 
   td[contenteditable="true"] { cursor: text; border-radius: 4px; }
