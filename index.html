@@ -226,6 +226,295 @@
   .secondary-btn:hover { background: #eef5f2; }
   .secondary-btn.active { background: var(--ink); color: #fff; }
 
+  /* ---------- আজকের রুট/বাজার কনটেক্সট বার ---------- */
+  .context-bar {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--gold);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .context-item label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .context-item input, .context-item select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    font-weight: 600;
+    background: #fafcfb;
+  }
+  .context-item input:focus, .context-item select:focus {
+    outline: none;
+    border-color: var(--ink-soft);
+    background: #fff;
+  }
+  @media (max-width: 480px) {
+    .context-bar { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- সিলেক্ট + নতুন যোগ বাটন ---------- */
+  .select-row { display: flex; gap: 6px; align-items: stretch; }
+  .select-row select { flex: 1 1 auto; min-width: 0; }
+  .add-mini-btn {
+    flex: 0 0 auto;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    margin: 0;
+  }
+  .add-mini-btn:hover { background: var(--ink-soft); }
+  .route-badge {
+    display: inline-block;
+    background: var(--brick-soft);
+    color: var(--gold-deep);
+    border: 1px solid #f0c6c3;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  /* ---------- মেইন ট্যাব নেভিগেশন ---------- */
+  .main-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .main-tab-btn {
+    flex: 1;
+    min-width: 108px;
+    background: #fff;
+    color: var(--muted);
+    border: 1.5px solid var(--rule);
+    padding: 10px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .main-tab-btn.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ---------- দোকান কার্ড ---------- */
+  .shop-card {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .shop-card { position: relative; padding-right: 40px; }
+  .shop-card .shop-del-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 15px;
+    padding: 4px 6px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 6px;
+    line-height: 1;
+  }
+  .shop-card .shop-del-btn:hover { background: var(--brick-soft); color: var(--brick); }
+  .shop-card .shop-order-hint {
+    font-size: 11.5px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .shop-card:hover { border-color: var(--ink); background: #fafcfb; }
+  .shop-card.selected { border-color: var(--gold); background: var(--brick-soft); }
+  .shop-card .shop-name { font-weight: 700; color: var(--ink); font-size: 15px; }
+  .shop-card .shop-meta { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .market-badge {
+    display: inline-block;
+    background: #eef5f2;
+    color: var(--ink-soft);
+    border: 1px solid #cfe3dc;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  /* ---------- অর্ডার কার্ট ---------- */
+  .cart-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--rule);
+    gap: 10px;
+  }
+  .cart-row .cart-name { font-weight: 600; font-size: 14px; flex: 1; }
+  .cart-row .cart-sub { font-size: 12px; color: var(--muted); }
+  .cart-qty-box { display: flex; align-items: center; gap: 6px; }
+  .qty-btn {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    border: 1.5px solid var(--rule);
+    background: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .qty-btn:hover { background: #eef5f2; }
+  .qty-val { min-width: 26px; text-align: center; font-weight: 700; font-size: 14px; }
+  .qty-input {
+    width: 46px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 5px 2px;
+    border: 1.5px solid var(--rule);
+    border-radius: 7px;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .qty-input:focus {
+    outline: none;
+    border-color: var(--ink-soft);
+  }
+  .cart-total-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 4px 6px;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+    border-top: 2px solid var(--ink);
+    margin-top: 6px;
+  }
+  .pick-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .pick-list-item:hover { background: #eef5f2; }
+  .pick-list-item .pname { font-weight: 600; font-size: 14px; }
+  .pick-list-item .pprice { font-size: 12.5px; color: var(--muted); }
+  .add-chip {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .add-chip-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .add-chip.piece-chip {
+    background: var(--tag10);
+  }
+
+  /* ---------- অর্ডার হিস্টোরি ---------- */
+  .order-card {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .order-card { display: flex; gap: 12px; align-items: flex-start; }
+  .order-card .order-serial {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .order-card .order-body { flex: 1; min-width: 0; }
+  .order-card:hover { border-color: var(--ink); }
+  .order-card .order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .order-card .order-shop { font-weight: 700; color: var(--ink); font-size: 15px; }
+  .order-card .order-date { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .order-card .order-amount { font-weight: 700; color: var(--gold-deep); font-size: 16px; }
+  .order-card .order-items-count { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+  .empty-hint { text-align: center; color: #999; padding: 24px 10px; font-size: 14px; }
+
+  .step-label {
+    font-family: 'Baloo Da 2', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-label .num {
+    background: var(--gold);
+    color: #fff;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
   /* ---------- প্রাইস-ট্যাগ ফিল্টার চিপ ---------- */
   .filter-btn-row {
     display: flex;
@@ -269,6 +558,46 @@
   }
   .filter-chip.active .dot { background: #fff; }
 
+  /* ---------- অর্ডার পেইজের ছোট ফিল্টার চিপ (প্রোডাক্ট যোগ করুন লেখার পাশে) ---------- */
+  .step-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .step-label-row .step-label { margin-bottom: 0; }
+  .mini-filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-chip-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    color: var(--text);
+    border: 1.5px solid var(--rule);
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-chip-sm .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--chip-color, var(--muted)); }
+  .filter-chip-sm[data-value="৫"] { --chip-color: var(--tag5); }
+  .filter-chip-sm[data-value="১০"] { --chip-color: var(--tag10); }
+  .filter-chip-sm[data-value="২০"] { --chip-color: var(--tag20); }
+  .filter-chip-sm[data-value="ফ্যামিলি"] { --chip-color: var(--tagfam); }
+  .filter-chip-sm[data-value="অন্যান্য"] { --chip-color: var(--tagother); }
+  .filter-chip-sm:hover { border-color: var(--chip-color, var(--ink)); background: #fafcfb; }
+  .filter-chip-sm.active {
+    background: var(--chip-color, var(--ink));
+    border-color: var(--chip-color, var(--ink));
+    color: #fff;
+  }
+  .filter-chip-sm.active .dot { background: #fff; }
+
   .product-name-cell {
     cursor: pointer;
     color: var(--ink-soft);
@@ -293,6 +622,12 @@
     border-radius: 10px;
     text-decoration: none;
     vertical-align: middle;
+  }
+  .piece-allowed-badge {
+    background: #e5eef7;
+    color: var(--tag10);
+    border-color: #c7dcf0;
+    margin-left: 4px;
   }
 
   /* ---------- পপআপ ---------- */
@@ -399,13 +734,43 @@
     <p class="tagline">দাম ও স্টক এক নজরে</p>
   </div>
 
+  <div class="context-bar">
+    <div class="context-item">
+      <label>🛣️ আজকের রুট</label>
+      <div class="select-row">
+        <select id="currentRouteInput" onchange="onContextRouteChange(this.value)">
+          <option value="">-- রুট বাছাই করুন --</option>
+        </select>
+        <button type="button" class="add-mini-btn" title="নতুন রুট যোগ করুন" onclick="promptAddRoute()">+</button>
+      </div>
+    </div>
+    <div class="context-item">
+      <label>🏬 বর্তমান বাজার</label>
+      <div class="select-row">
+        <select id="currentMarketInput" onchange="saveContextValue('market', this.value)">
+          <option value="">-- বাজার বাছাই করুন --</option>
+        </select>
+        <button type="button" class="add-mini-btn" title="নতুন বাজার যোগ করুন" onclick="promptAddMarket(document.getElementById('currentRouteInput').value)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-tabs">
+    <button type="button" class="main-tab-btn active" data-tab="list" onclick="switchTab('list', this)">📦 তালিকা</button>
+    <button type="button" class="main-tab-btn" data-tab="shops" onclick="switchTab('shops', this)">🏪 দোকান</button>
+    <button type="button" class="main-tab-btn" data-tab="neworder" onclick="switchTab('neworder', this)">🧾 নতুন অর্ডার</button>
+    <button type="button" class="main-tab-btn" data-tab="history" onclick="switchTab('history', this)">📜 হিস্টোরি</button>
+  </div>
+
+  <div id="tab-list" class="tab-panel active">
+
   <div class="card">
-    <div class="filter-btn-row" id="filterBtnRow">
-      <button type="button" class="filter-chip" data-value="৫" onclick="filterByPiecePrice('৫', this)"><span class="dot"></span>৫ টাকার</button>
-      <button type="button" class="filter-chip" data-value="১০" onclick="filterByPiecePrice('১০', this)"><span class="dot"></span>১০ টাকার</button>
-      <button type="button" class="filter-chip" data-value="২০" onclick="filterByPiecePrice('২০', this)"><span class="dot"></span>২০ টাকার</button>
-      <button type="button" class="filter-chip" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামিলি</button>
-      <button type="button" class="filter-chip" data-value="অন্যান্য" onclick="filterByPiecePrice('অন্যান্য', this)"><span class="dot"></span>অন্যান্য</button>
+    <div class="mini-filter-row" id="filterBtnRow">
+      <button type="button" class="filter-chip-sm" data-value="৫" onclick="filterByPiecePrice('৫', this)"><span class="dot"></span>৫</button>
+      <button type="button" class="filter-chip-sm" data-value="১০" onclick="filterByPiecePrice('১০', this)"><span class="dot"></span>১০</button>
+      <button type="button" class="filter-chip-sm" data-value="২০" onclick="filterByPiecePrice('২০', this)"><span class="dot"></span>২০</button>
+      <button type="button" class="filter-chip-sm" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামিলি</button>
+      <button type="button" class="filter-chip-sm" data-value="অন্যান্য" onclick="filterByPiecePrice('অন্যান্য', this)"><span class="dot"></span>অন্যান্য</button>
     </div>
     <input type="text" id="searchInput" class="search-box" placeholder="🔍 নাম, দাম, পিস — যেকোনো কিছু দিয়ে সার্চ করুন..." oninput="renderTable(this.value)">
     <table>
@@ -439,6 +804,7 @@
           <option value="কার্টুন">কার্টুন</option>
           <option value="বক্স">বক্স</option>
           <option value="পলি">পলি</option>
+          <option value="পাতা">পাতা</option>
         </select>
       </div>
       <div>
@@ -448,6 +814,14 @@
       <div>
         <label id="productPriceLabel">প্রোডাক্টের দাম (প্রতি কার্টুন)</label>
         <input type="number" id="productPrice" placeholder="টাকা">
+      </div>
+      <div class="full-width" style="display:flex;align-items:center;gap:8px;background:#f9f5f2;border:1.5px solid var(--rule);border-radius:8px;padding:10px 12px;">
+        <input type="checkbox" id="allowPieceOrder" style="width:18px;height:18px;margin:0;flex-shrink:0;" onchange="togglePieceOrderField(this.checked, 'pieceOrderPriceWrap')">
+        <label style="margin:0;color:var(--text);" for="allowPieceOrder">পিসে অর্ডার করার অনুমতি দিন (যেমনঃ ব্যাটারি — কার্টুন থেকে পিস কেটে অর্ডার করা যাবে)</label>
+      </div>
+      <div class="full-width" id="pieceOrderPriceWrap" style="display:none;">
+        <label>পিস প্রতি বিক্রয় মূল্য</label>
+        <input type="number" id="pieceOrderPrice" placeholder="যেমনঃ কার্টুন ২৪০ টাকা, ২৪ পিস হলে ১০ টাকা">
       </div>
       <div>
         <label>পিস বিক্রয় মূল্য</label>
@@ -477,6 +851,148 @@
     <div id="status"></div>
   </div>
 
+  </div>
+  <!-- /tab-list -->
+
+  <!-- ================= দোকান ট্যাব ================= -->
+  <div id="tab-shops" class="tab-panel">
+    <div class="card">
+      <h3>🏪 দোকান তালিকা</h3>
+      <input type="text" id="shopSearchInput" class="search-box" placeholder="🔍 দোকানের নাম, বাজার বা ঠিকানা দিয়ে সার্চ করুন..." oninput="renderShopList(this.value)">
+      <div id="shopListBox"><div class="empty-hint">লোড হচ্ছে...</div></div>
+    </div>
+
+    <div class="toggle-btn-row">
+      <button type="button" class="secondary-btn" onclick="toggleCard('addShopCard', this)">➕ নতুন দোকান যোগ করুন</button>
+    </div>
+
+    <div class="card" id="addShopCard" style="display:none;">
+      <h3>➕ নতুন দোকান যোগ করুন</h3>
+      <div class="form-grid">
+        <div class="full-width">
+          <label>দোকানের নাম</label>
+          <input type="text" id="shopName" placeholder="যেমনঃ রহিম স্টোর">
+        </div>
+        <input type="hidden" id="shopRoute">
+        <div class="full-width">
+          <label>কোন বাজার</label>
+          <div class="select-row">
+            <select id="shopMarket" onchange="onNewShopMarketChange(this, 'shopRoute')">
+              <option value="">-- বাছাই করুন --</option>
+            </select>
+            <button type="button" class="add-mini-btn" onclick="promptAddMarket(document.getElementById('currentRouteInput').value, 'shopMarket')">+</button>
+          </div>
+        </div>
+        <div>
+          <label>মোবাইল নম্বর (ইচ্ছিক)</label>
+          <input type="text" id="shopMobile" placeholder="০১XXXXXXXXX">
+        </div>
+        <div class="full-width">
+          <label>ঠিকানা</label>
+          <input type="text" id="shopAddress" placeholder="দোকানের ঠিকানা">
+        </div>
+      </div>
+      <button onclick="addShop()">দোকান যোগ করুন</button>
+      <div id="shopStatus"></div>
+    </div>
+  </div>
+  <!-- /tab-shops -->
+
+  <!-- ================= নতুন অর্ডার ট্যাব ================= -->
+  <div id="tab-neworder" class="tab-panel">
+
+    <div class="card" id="orderShopStepCard">
+      <p class="step-label" style="cursor:pointer;" onclick="toggleOrderShopPicker()">
+        <span class="num">১</span> দোকান বাছাই করুন
+        <span id="orderShopPickerCaret" style="float:right;">▾</span>
+      </p>
+      <div id="orderSelectedShopBox"></div>
+      <div id="orderShopPickerWrap" style="display:none;">
+        <input type="text" id="orderShopSearch" class="search-box" placeholder="🔍 দোকানের নাম বা বাজার দিয়ে খুঁজুন..." oninput="renderOrderShopPicker(this.value)">
+        <div id="orderShopPickerBox"><div class="empty-hint">লোড হচ্ছে...</div></div>
+      </div>
+      <div class="toggle-btn-row" style="margin-top:12px;margin-bottom:0;">
+        <button type="button" class="secondary-btn" onclick="toggleCard('orderNewShopForm', this)">➕ এটা নতুন দোকান — এখনই যোগ করুন</button>
+      </div>
+      <div id="orderNewShopForm" style="display:none;margin-top:14px;">
+        <div class="form-grid">
+          <div class="full-width">
+            <label>দোকানের নাম</label>
+            <input type="text" id="orderNewShopName" placeholder="যেমনঃ রহিম স্টোর">
+          </div>
+          <input type="hidden" id="orderNewShopRoute">
+          <div class="full-width">
+            <label>কোন বাজার</label>
+            <div class="select-row">
+              <select id="orderNewShopMarket" onchange="onNewShopMarketChange(this, 'orderNewShopRoute')">
+                <option value="">-- বাছাই করুন --</option>
+              </select>
+              <button type="button" class="add-mini-btn" onclick="promptAddMarket(document.getElementById('currentRouteInput').value, 'orderNewShopMarket')">+</button>
+            </div>
+          </div>
+          <div>
+            <label>মোবাইল নম্বর (ইচ্ছিক)</label>
+            <input type="text" id="orderNewShopMobile" placeholder="০১XXXXXXXXX">
+          </div>
+          <div class="full-width">
+            <label>ঠিকানা</label>
+            <input type="text" id="orderNewShopAddress" placeholder="দোকানের ঠিকানা">
+          </div>
+        </div>
+        <button onclick="addShopFromOrder()">দোকান যোগ করে বাছাই করুন</button>
+        <div id="orderNewShopStatus"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="step-label"><span class="num">২</span> অর্ডার কার্ট</p>
+      <div id="orderCartBox"><div class="empty-hint">এখনো কোনো প্রোডাক্ট যোগ করা হয়নি</div></div>
+      <div class="cart-total-bar"><span>সর্বমোট</span><span id="orderCartTotal">০ টাকা</span></div>
+      <button onclick="saveOrder()" style="width:100%;">✅ অর্ডার সেভ করুন</button>
+      <div id="orderSaveStatus"></div>
+    </div>
+
+    <div class="card">
+      <div class="step-label-row">
+        <p class="step-label"><span class="num">৩</span> প্রোডাক্ট যোগ করুন</p>
+        <div class="mini-filter-row" id="orderFilterBtnRow">
+          <button type="button" class="filter-chip-sm" data-value="৫" onclick="filterOrderProductsByCategory('৫', this)"><span class="dot"></span>৫</button>
+          <button type="button" class="filter-chip-sm" data-value="১০" onclick="filterOrderProductsByCategory('১০', this)"><span class="dot"></span>১০</button>
+          <button type="button" class="filter-chip-sm" data-value="২০" onclick="filterOrderProductsByCategory('২০', this)"><span class="dot"></span>২০</button>
+          <button type="button" class="filter-chip-sm" data-value="ফ্যামিলি" onclick="filterOrderProductsByCategory('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামি</button>
+          <button type="button" class="filter-chip-sm" data-value="অন্যান্য" onclick="filterOrderProductsByCategory('অন্যান্য', this)"><span class="dot"></span>অন্যা</button>
+        </div>
+      </div>
+      <input type="text" id="orderProductSearch" class="search-box" placeholder="🔍 প্রোডাক্টের নাম দিয়ে খুঁজুন..." oninput="renderOrderProductPicker(this.value)">
+      <div id="orderProductPickerBox"><div class="empty-hint">লোড হচ্ছে...</div></div>
+    </div>
+  </div>
+  <!-- /tab-neworder -->
+
+  <!-- ================= অর্ডার হিস্টোরি ট্যাব ================= -->
+  <div id="tab-history" class="tab-panel">
+    <div class="card">
+      <h3>📜 অর্ডার হিস্টোরি</h3>
+      <input type="text" id="historySearchInput" class="search-box" placeholder="🔍 দোকানের নাম বা বাজার দিয়ে খুঁজুন..." oninput="renderOrderHistory(this.value)">
+      <div id="orderHistoryBox"><div class="empty-hint">লোড হচ্ছে...</div></div>
+    </div>
+  </div>
+  <!-- /tab-history -->
+
+</div>
+
+<!-- অর্ডার বিস্তারিত পপআপ -->
+<div id="orderDetailModal" class="modal-overlay" onclick="closeOrderDetailsOnOverlay(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button type="button" class="modal-close" onclick="closeOrderDetails()">✕</button>
+    <h3 id="orderDetailShopName" style="font-family:'Baloo Da 2',sans-serif;font-size:19px;color:var(--ink);margin:0 0 4px;"></h3>
+    <p id="orderDetailMeta" style="font-size:12.5px;color:var(--muted);margin:0 0 14px;"></p>
+    <div id="orderDetailItems"></div>
+    <div class="cart-total-bar"><span>সর্বমোট</span><span id="orderDetailTotal"></span></div>
+    <div class="modal-danger-zone">
+      <button type="button" class="danger-link" onclick="deleteOrderFromModal()">🗑️ এই অর্ডারটি ডিলিট করুন</button>
+    </div>
+  </div>
 </div>
 
 <!-- প্রোডাক্ট বিস্তারিত পপআপ -->
@@ -491,11 +1007,20 @@
         <option value="কার্টুন">কার্টুন</option>
         <option value="বক্স">বক্স</option>
         <option value="পলি">পলি</option>
+        <option value="পাতা">পাতা</option>
       </select>
     </div>
     <div class="modal-field">
       <label id="modalPiecesLabel">প্রতি কার্টুনে পিস</label>
       <div id="modalPieces" contenteditable="true" data-field="piecesPerCarton" data-type="number" onblur="handleCellEdit(this)"></div>
+    </div>
+    <div class="modal-field" style="display:flex;align-items:center;gap:8px;">
+      <input type="checkbox" id="modalAllowPieceOrder" style="width:18px;height:18px;margin:0;flex-shrink:0;" onchange="handleAllowPieceOrderChange(this)">
+      <label style="margin:0;" for="modalAllowPieceOrder">পিসে অর্ডার করার অনুমতি দিন</label>
+    </div>
+    <div class="modal-field" id="modalPieceOrderPriceWrap" style="display:none;">
+      <label>পিস প্রতি বিক্রয় মূল্য</label>
+      <div id="modalPieceOrderPrice" contenteditable="true" data-field="pieceOrderPrice" data-type="number" onblur="handleCellEdit(this)"></div>
     </div>
     <div class="modal-field">
       <label>পিস বিক্রয় মূল্য</label>
@@ -541,6 +1066,190 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const productsCol = db.collection("products");
+  const shopsCol = db.collection("shops");
+  const ordersCol = db.collection("orders");
+  const routesCol = db.collection("routes");
+  const marketsCol = db.collection("markets");
+
+  // ================= রুট ও বাজার (ফায়ারবেসে সেভ হওয়া মাস্টার লিস্ট) =================
+  // রুট ও বাজার আর ফ্রি-টেক্সট না — ফায়ারবেসে ফিক্সড লিস্ট হিসেবে থাকে, তাই একই
+  // রুট/বাজার বারবার ভিন্নভাবে টাইপ হয়ে ডুপ্লিকেট তৈরি হয় না। প্রতিটা বাজার একটা
+  // নির্দিষ্ট রুটের অধীনে থাকে (route -> market -> shop হায়ারার্কি)।
+  let allRoutes = [];   // [{id, name, createdAt}]
+  let allMarkets = [];  // [{id, name, route, createdAt}]
+
+  function fillSelect(selectEl, options, selectedValue, placeholder) {
+    if (!selectEl) return;
+    const current = selectedValue !== undefined ? selectedValue : selectEl.value;
+    selectEl.innerHTML = `<option value="">${placeholder}</option>` +
+      options.map((o) => `<option value="${o}">${o}</option>`).join("");
+    if (current && options.includes(current)) selectEl.value = current;
+  }
+
+  window.renderRouteOptions = function(selectEl, selectedValue) {
+    fillSelect(selectEl, allRoutes.map((r) => r.name), selectedValue, "-- রুট বাছাই করুন --");
+  };
+
+  window.renderMarketOptions = function(selectEl, routeName, selectedValue) {
+    if (!selectEl) return;
+    const filtered = routeName
+      ? allMarkets.filter((m) => m.route === routeName).map((m) => m.name)
+      : allMarkets.map((m) => m.name);
+    fillSelect(selectEl, filtered, selectedValue, "-- বাজার বাছাই করুন --");
+  };
+
+  function refreshAllRouteMarketSelects() {
+    const ctxRoute = document.getElementById("currentRouteInput");
+    const ctxMarket = document.getElementById("currentMarketInput");
+    if (ctxRoute) renderRouteOptions(ctxRoute);
+    if (ctxMarket) renderMarketOptions(ctxMarket, ctxRoute ? ctxRoute.value : "");
+
+    // "রুট" এখন আলাদা করে বাছাই করা লাগে না — বাজার বাছাই করলেই তার নিজস্ব রুট
+    // (মার্কেট ডকুমেন্টে সেভ করা) স্বয়ংক্রিয়ভাবে বসে যায়, তাই এখানে সব বাজার দেখানো হয়।
+    const shopMarket = document.getElementById("shopMarket");
+    if (shopMarket) renderMarketOptions(shopMarket, null, shopMarket.value);
+
+    const oMarket = document.getElementById("orderNewShopMarket");
+    if (oMarket) renderMarketOptions(oMarket, null, oMarket.value);
+  }
+
+  // বাজার বাছাই করলে সেই বাজারের নিজস্ব রুট (allMarkets থেকে) হিডেন ইনপুটে বসিয়ে দেয়
+  window.onNewShopMarketChange = function(selectEl, routeInputId) {
+    selectEl.dataset.userEdited = "1";
+    const m = allMarkets.find((mm) => mm.name === selectEl.value);
+    const routeEl = document.getElementById(routeInputId);
+    if (routeEl) routeEl.value = m ? m.route : "";
+  };
+
+  window.promptAddRoute = function(targetSelectId) {
+    const name = (prompt("নতুন রুটের নাম লিখুন (যেমনঃ রুট-১):") || "").trim();
+    if (!name) return;
+    if (allRoutes.some((r) => r.name.toLowerCase() === name.toLowerCase())) {
+      alert("এই রুট আগে থেকেই আছে।");
+      const sel = targetSelectId ? document.getElementById(targetSelectId) : document.getElementById("currentRouteInput");
+      if (sel) { sel.value = name; sel.dispatchEvent(new Event("change")); }
+      return;
+    }
+    routesCol.add({ name, createdAt: new Date() }).then(() => {
+      const sel = targetSelectId ? document.getElementById(targetSelectId) : document.getElementById("currentRouteInput");
+      if (sel) sel.dataset.pendingSelect = name;
+    }).catch((err) => alert("ত্রুটি: " + err.message));
+  };
+
+  window.promptAddMarket = function(routeName, targetSelectId) {
+    if (!routeName) {
+      alert("প্রথমে একটা রুট বাছাই করুন, তারপর সেই রুটের অধীনে বাজার যোগ করুন।");
+      return;
+    }
+    const name = (prompt(`"${routeName}" রুটের অধীনে নতুন বাজারের নাম লিখুন (যেমনঃ নিউ মার্কেট):`) || "").trim();
+    if (!name) return;
+    if (allMarkets.some((m) => m.route === routeName && m.name.toLowerCase() === name.toLowerCase())) {
+      alert("এই বাজার আগে থেকেই এই রুটে আছে।");
+      const sel = targetSelectId ? document.getElementById(targetSelectId) : document.getElementById("currentMarketInput");
+      if (sel) { sel.value = name; sel.dispatchEvent(new Event("change")); }
+      return;
+    }
+    marketsCol.add({ name, route: routeName, createdAt: new Date() }).then(() => {
+      const sel = targetSelectId ? document.getElementById(targetSelectId) : document.getElementById("currentMarketInput");
+      if (sel) sel.dataset.pendingSelect = name;
+    }).catch((err) => alert("ত্রুটি: " + err.message));
+  };
+
+  window.onContextRouteChange = function(routeName) {
+    saveContextValue("route", routeName);
+    renderMarketOptions(document.getElementById("currentMarketInput"), routeName, "");
+    saveContextValue("market", "");
+  };
+
+  window.saveContextValue = function(key, value) {
+    localStorage.setItem("sr_current_" + key, value);
+    if (key === "market") applyCurrentMarketToForms();
+    // আজকের রুট/বাজার বদলালে "দোকান বাছাই করুন" তালিকা ও "দোকান তালিকা" ট্যাব দুটোই নতুন রুট/বাজার অনুযায়ী রিফ্রেশ হবে
+    const shopSearchEl = document.getElementById("orderShopSearch");
+    renderOrderShopPicker(shopSearchEl ? shopSearchEl.value : "");
+    const shopListSearchEl = document.getElementById("shopSearchInput");
+    renderShopList(shopListSearchEl ? shopListSearchEl.value : "");
+  };
+
+  window.applyCurrentMarketToForms = function() {
+    const route = localStorage.getItem("sr_current_route") || "";
+    const market = localStorage.getItem("sr_current_market") || "";
+    const shopRouteEl = document.getElementById("shopRoute");
+    const shopMarketEl = document.getElementById("shopMarket");
+    const orderNewShopRouteEl = document.getElementById("orderNewShopRoute");
+    const orderNewShopMarketEl = document.getElementById("orderNewShopMarket");
+    if (shopMarketEl && !shopMarketEl.dataset.userEdited) {
+      renderMarketOptions(shopMarketEl, null, market);
+      if (shopRouteEl) shopRouteEl.value = route;
+    }
+    if (orderNewShopMarketEl && !orderNewShopMarketEl.dataset.userEdited) {
+      renderMarketOptions(orderNewShopMarketEl, null, market);
+      if (orderNewShopRouteEl) orderNewShopRouteEl.value = route;
+    }
+  };
+
+  window.loadContextValues = function() {
+    const route = localStorage.getItem("sr_current_route") || "";
+    const market = localStorage.getItem("sr_current_market") || "";
+    const ctxRoute = document.getElementById("currentRouteInput");
+    const ctxMarket = document.getElementById("currentMarketInput");
+    if (ctxRoute) ctxRoute.value = route;
+    if (ctxMarket) renderMarketOptions(ctxMarket, route, market);
+    applyCurrentMarketToForms();
+  };
+
+  // রুট রিয়েল-টাইম লিস্টেনার
+  routesCol.orderBy("name").onSnapshot((snapshot) => {
+    allRoutes = [];
+    snapshot.forEach((docSnap) => allRoutes.push({ id: docSnap.id, ...docSnap.data() }));
+    refreshAllRouteMarketSelects();
+    // নতুন যোগ করা রুট/বাজার থাকলে সেটা সিলেক্ট করে দেওয়া
+    ["currentRouteInput", "shopRoute", "orderNewShopRoute"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && el.dataset.pendingSelect) {
+        el.value = el.dataset.pendingSelect;
+        delete el.dataset.pendingSelect;
+        el.dispatchEvent(new Event("change"));
+      }
+    });
+    loadContextValues();
+  });
+
+  // বাজার রিয়েল-টাইম লিস্টেনার
+  marketsCol.orderBy("name").onSnapshot((snapshot) => {
+    allMarkets = [];
+    snapshot.forEach((docSnap) => allMarkets.push({ id: docSnap.id, ...docSnap.data() }));
+    refreshAllRouteMarketSelects();
+    ["currentMarketInput", "shopMarket", "orderNewShopMarket"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el && el.dataset.pendingSelect) {
+        el.value = el.dataset.pendingSelect;
+        delete el.dataset.pendingSelect;
+        el.dispatchEvent(new Event("change"));
+      }
+    });
+  });
+
+  // ইউনিট ব্যাজে প্যাকেজিং ধরনের পাশে পিস সংখ্যা দেখানোর ফাংশন (যেমনঃ "কার্টুন-২৪")
+  window.formatUnitBadge = function(unitType, piecesPerCarton) {
+    const type = unitType || "কার্টুন";
+    if (piecesPerCarton === undefined || piecesPerCarton === null || piecesPerCarton === "") return type;
+    return `${type}-${piecesPerCarton}`;
+  };
+
+  // ================= ট্যাব সুইচ করার ফাংশন =================
+  window.switchTab = function(tabName, btn) {
+    document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+    document.querySelectorAll(".main-tab-btn").forEach((b) => b.classList.remove("active"));
+    document.getElementById("tab-" + tabName).classList.add("active");
+    btn.classList.add("active");
+    if (tabName === "shops") renderShopList(document.getElementById("shopSearchInput").value);
+    if (tabName === "neworder") {
+      renderOrderShopPicker(document.getElementById("orderShopSearch").value);
+      renderOrderProductPicker(document.getElementById("orderProductSearch").value);
+    }
+    if (tabName === "history") renderOrderHistory(document.getElementById("historySearchInput").value);
+  };
 
   // কার্ড দেখানো/লুকানোর ফাংশন (নতুন প্রোডাক্ট ও বাল্ক ইমপোর্ট বাটন)
   window.toggleCard = function(cardId, btn) {
@@ -548,13 +1257,22 @@
     const isHidden = card.style.display === "none";
     card.style.display = isHidden ? "block" : "none";
     btn.classList.toggle("active", isHidden);
-    if (isHidden) card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    if (isHidden) {
+      card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      if (cardId === "addShopCard" || cardId === "orderNewShopForm") applyCurrentMarketToForms();
+    }
   };
 
-  // প্যাকেজিং ধরন (কার্টুন/বক্স/পলি) অনুযায়ী ফর্মের লেবেল বদলানোর ফাংশন
+  // প্যাকেজিং ধরন (কার্টুন/বক্স/পলি/পাতা) অনুযায়ী ফর্মের লেবেল বদলানোর ফাংশন
   window.syncUnitLabels = function(unitType) {
     document.getElementById("piecesPerCartonLabel").textContent = `এক ${unitType}-এ কয় পিস আঁটে`;
     document.getElementById("productPriceLabel").textContent = `প্রোডাক্টের দাম (প্রতি ${unitType})`;
+  };
+
+  // "পিসে অর্ডার করার অনুমতি" চেকবক্স টিক দিলে পিস প্রতি দামের ফিল্ড দেখানো/লুকানোর ফাংশন
+  window.togglePieceOrderField = function(checked, wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (wrap) wrap.style.display = checked ? "" : "none";
   };
 
   // ডুপ্লিকেট প্রোডাক্ট স্বয়ংক্রিয়ভাবে মুছে ফেলার ফাংশন
@@ -604,10 +1322,17 @@
     const priceCategory = document.getElementById("priceCategory").value;
     const freeQty = document.getElementById("freeQty").value;
     const freePrice = document.getElementById("freePrice").value;
+    const allowPieceOrder = document.getElementById("allowPieceOrder").checked;
+    const pieceOrderPrice = document.getElementById("pieceOrderPrice").value;
     const statusEl = document.getElementById("status");
 
     if (!name || !pieces || !price) {
       statusEl.textContent = "⚠️ নাম, পিস সংখ্যা ও দাম দিতে হবে।";
+      statusEl.style.color = "red";
+      return;
+    }
+    if (allowPieceOrder && !pieceOrderPrice) {
+      statusEl.textContent = "⚠️ পিসে অর্ডার অনুমতি দিলে পিস প্রতি বিক্রয় মূল্য দিতে হবে।";
       statusEl.style.color = "red";
       return;
     }
@@ -622,6 +1347,8 @@
         priceCategory: priceCategory || "",
         freeQty: freeQty ? Number(freeQty) : 0,
         freePrice: freePrice ? Number(freePrice) : null,
+        allowPieceOrder: allowPieceOrder,
+        pieceOrderPrice: allowPieceOrder ? Number(pieceOrderPrice) : null,
         createdAt: new Date()
       });
 
@@ -635,6 +1362,9 @@
       document.getElementById("priceCategory").value = "";
       document.getElementById("freeQty").value = "";
       document.getElementById("freePrice").value = "";
+      document.getElementById("allowPieceOrder").checked = false;
+      document.getElementById("pieceOrderPrice").value = "";
+      togglePieceOrderField(false, "pieceOrderPriceWrap");
 
       statusEl.textContent = "✅ প্রোডাক্ট সফলভাবে যোগ হয়েছে।";
       statusEl.style.color = "green";
@@ -698,7 +1428,7 @@
       btn.classList.remove("active");
     } else {
       activeCategoryFilter = value;
-      document.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll("#filterBtnRow .filter-chip-sm").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
     }
     const searchEl = document.getElementById("searchInput");
@@ -740,7 +1470,7 @@
     list.forEach((d) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${d.unitType || "কার্টুন"}</span></td>
+        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${formatUnitBadge(d.unitType, d.piecesPerCarton)}</span>${d.allowPieceOrder ? `<span class="unit-badge piece-allowed-badge">পিস অনুমতি</span>` : ""}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="price" data-type="number" onblur="handleCellEdit(this)">${d.price}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)">${d.freePrice ?? 0}</td>
       `;
@@ -769,6 +1499,15 @@
     piecesEl.textContent = p.piecesPerCarton ?? "";
     piecesEl.dataset.id = id;
 
+    const allowPieceOrderEl = document.getElementById("modalAllowPieceOrder");
+    allowPieceOrderEl.checked = !!p.allowPieceOrder;
+    allowPieceOrderEl.dataset.id = id;
+    document.getElementById("modalPieceOrderPriceWrap").style.display = p.allowPieceOrder ? "" : "none";
+
+    const pieceOrderPriceEl = document.getElementById("modalPieceOrderPrice");
+    pieceOrderPriceEl.textContent = p.pieceOrderPrice ?? "";
+    pieceOrderPriceEl.dataset.id = id;
+
     const piecePriceEl = document.getElementById("modalPiecePrice");
     piecePriceEl.textContent = p.piecePrice ?? "";
     piecePriceEl.dataset.id = id;
@@ -791,6 +1530,18 @@
     document.getElementById("modalPiecesLabel").textContent = `প্রতি ${value}-এ পিস`;
     try {
       await productsCol.doc(id).update({ unitType: value });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  // পপআপে "পিসে অর্ডার করার অনুমতি" চেকবক্স বদলালে সেভ করা ও ফিল্ড দেখানো/লুকানোর ফাংশন
+  window.handleAllowPieceOrderChange = async function(checkboxEl) {
+    const id = checkboxEl.dataset.id;
+    const checked = checkboxEl.checked;
+    document.getElementById("modalPieceOrderPriceWrap").style.display = checked ? "" : "none";
+    try {
+      await productsCol.doc(id).update({ allowPieceOrder: checked });
     } catch (err) {
       alert("❌ আপডেট ব্যর্থ: " + err.message);
     }
@@ -823,6 +1574,497 @@
       closeDetails();
     }
   };
+
+  // ================= দোকান ব্যবস্থাপনা =================
+  let allShops = [];
+
+  window.addShop = async function() {
+    const name = document.getElementById("shopName").value.trim();
+    const route = document.getElementById("shopRoute").value.trim();
+    const market = document.getElementById("shopMarket").value.trim();
+    const mobile = document.getElementById("shopMobile").value.trim();
+    const address = document.getElementById("shopAddress").value.trim();
+    const statusEl = document.getElementById("shopStatus");
+
+    if (!name) {
+      statusEl.textContent = "⚠️ দোকানের নাম দিতে হবে।";
+      statusEl.style.color = "red";
+      return;
+    }
+
+    try {
+      await shopsCol.add({ name, route, market, mobile, address, createdAt: new Date() });
+      document.getElementById("shopName").value = "";
+      document.getElementById("shopMobile").value = "";
+      document.getElementById("shopAddress").value = "";
+      const routeEl = document.getElementById("shopRoute");
+      const marketEl = document.getElementById("shopMarket");
+      delete routeEl.dataset.userEdited;
+      delete marketEl.dataset.userEdited;
+      applyCurrentMarketToForms();
+      statusEl.textContent = "✅ দোকান সফলভাবে যোগ হয়েছে।";
+      statusEl.style.color = "green";
+      setTimeout(() => statusEl.textContent = "", 2500);
+    } catch (err) {
+      statusEl.textContent = "❌ ত্রুটি: " + err.message;
+      statusEl.style.color = "red";
+    }
+  };
+
+  window.deleteShop = async function(id, evt) {
+    if (evt) evt.stopPropagation();
+    if (confirm("আপনি কি নিশ্চিত এই দোকানটি মুছে ফেলতে চান?")) {
+      await shopsCol.doc(id).delete();
+    }
+  };
+
+  window.renderShopList = function(filterText) {
+    const box = document.getElementById("shopListBox");
+    if (!box) return;
+    const term = (filterText || "").trim().toLowerCase();
+    // উপরে "আজকের রুট" ও "বর্তমান বাজার" যা বাছাই করা আছে, সেই রুট ও বাজারের দোকানই দেখানো হবে
+    const currentRoute = localStorage.getItem("sr_current_route") || "";
+    const currentMarket = localStorage.getItem("sr_current_market") || "";
+    let list = allShops;
+    if (currentRoute) list = list.filter((s) => s.route === currentRoute);
+    if (currentMarket) list = list.filter((s) => s.market === currentMarket);
+    if (term) {
+      list = list.filter((s) => [s.name, s.market, s.route, s.address, s.mobile].join(" ").toLowerCase().includes(term));
+    }
+    if (list.length === 0) {
+      const hint = (currentRoute || currentMarket) ? "এই রুট/বাজারে কোনো দোকান পাওয়া যায়নি" : "কোনো দোকান পাওয়া যায়নি";
+      box.innerHTML = `<div class="empty-hint">${hint}</div>`;
+      return;
+    }
+    box.innerHTML = "";
+    list.forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "shop-card";
+      div.innerHTML = `
+        <button type="button" class="shop-del-btn" title="দোকান ডিলিট করুন">🗑️</button>
+        <div class="shop-name">${s.name}${s.market ? `<span class="market-badge">${s.market}</span>` : ""}${s.route ? `<span class="route-badge">🛣️ ${s.route}</span>` : ""}</div>
+        <div class="shop-meta">${s.address || ""}${s.mobile ? (s.address ? " · " : "") + "📞 " + s.mobile : ""}</div>
+        <div class="shop-order-hint">🧾 ক্লিক করে অর্ডার শুরু করুন</div>
+      `;
+      div.querySelector(".shop-del-btn").onclick = (evt) => deleteShop(s.id, evt);
+      div.onclick = () => startOrderForShop(s);
+      box.appendChild(div);
+    });
+  };
+
+  // ================= নতুন অর্ডার তৈরি =================
+  let selectedOrderShop = null;
+  let orderCart = {}; // productId -> {name, unitType, unitPrice, qty}
+
+  // "দোকান বাছাই করুন" ড্রপডাউন খোলা/বন্ধ করার ফাংশন
+  window.toggleOrderShopPicker = function() {
+    const wrap = document.getElementById("orderShopPickerWrap");
+    if (!wrap) return;
+    const isHidden = wrap.style.display === "none";
+    wrap.style.display = isHidden ? "block" : "none";
+    const caret = document.getElementById("orderShopPickerCaret");
+    if (caret) caret.textContent = isHidden ? "▴" : "▾";
+    if (isHidden) {
+      const searchEl = document.getElementById("orderShopSearch");
+      if (searchEl) searchEl.value = "";
+      renderOrderShopPicker("");
+      if (searchEl) searchEl.focus();
+    }
+  };
+
+  window.renderOrderShopPicker = function(filterText) {
+    const box = document.getElementById("orderShopPickerBox");
+    if (!box) return;
+    const term = (filterText || "").trim().toLowerCase();
+    // আজকের রুট/বাজার হিসেবে যা বাছাই করা আছে, শুধু সেই রুট ও বাজারের দোকানগুলোই দেখানো হয়
+    const currentRoute = localStorage.getItem("sr_current_route") || "";
+    const currentMarket = localStorage.getItem("sr_current_market") || "";
+    let list = allShops;
+    if (currentRoute) list = list.filter((s) => s.route === currentRoute);
+    if (currentMarket) list = list.filter((s) => s.market === currentMarket);
+    if (term) {
+      list = list.filter((s) => [s.name, s.market, s.route, s.address].join(" ").toLowerCase().includes(term));
+    }
+    if (list.length === 0) {
+      const hint = (currentRoute || currentMarket)
+        ? "এই রুট/বাজারে কোনো দোকান পাওয়া যায়নি। নিচ থেকে নতুন দোকান যোগ করুন।"
+        : "কোনো দোকান পাওয়া যায়নি। নিচ থেকে নতুন দোকান যোগ করুন।";
+      box.innerHTML = `<div class="empty-hint">${hint}</div>`;
+      return;
+    }
+    box.innerHTML = "";
+    list.forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "shop-card" + (selectedOrderShop && selectedOrderShop.id === s.id ? " selected" : "");
+      div.innerHTML = `
+        <div class="shop-name">${s.name}${s.market ? `<span class="market-badge">${s.market}</span>` : ""}${s.route ? `<span class="route-badge">🛣️ ${s.route}</span>` : ""}</div>
+        <div class="shop-meta">${s.address || ""}${s.mobile ? (s.address ? " · " : "") + "📞 " + s.mobile : ""}</div>
+      `;
+      div.onclick = () => selectOrderShop(s);
+      box.appendChild(div);
+    });
+  };
+
+  window.selectOrderShop = function(shop) {
+    selectedOrderShop = shop;
+    renderOrderShopPicker(document.getElementById("orderShopSearch") ? document.getElementById("orderShopSearch").value : "");
+    const selBox = document.getElementById("orderSelectedShopBox");
+    selBox.innerHTML = `
+      <div class="shop-card selected">
+        <div class="shop-name">✅ বাছাই করা হয়েছে: ${shop.name}${shop.market ? `<span class="market-badge">${shop.market}</span>` : ""}${shop.route ? `<span class="route-badge">🛣️ ${shop.route}</span>` : ""}</div>
+        <div class="shop-meta">${shop.address || ""}${shop.mobile ? (shop.address ? " · " : "") + "📞 " + shop.mobile : ""}</div>
+      </div>
+    `;
+    // দোকান বাছাই হয়ে গেলে ড্রপডাউন বন্ধ করে দেওয়া হয়
+    const wrap = document.getElementById("orderShopPickerWrap");
+    if (wrap) wrap.style.display = "none";
+    const caret = document.getElementById("orderShopPickerCaret");
+    if (caret) caret.textContent = "▾";
+  };
+
+  window.startOrderForShop = function(shop) {
+    selectOrderShop(shop);
+    const neworderBtn = document.querySelector('.main-tab-btn[data-tab="neworder"]');
+    switchTab("neworder", neworderBtn);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  window.addShopFromOrder = async function() {
+    const name = document.getElementById("orderNewShopName").value.trim();
+    const route = document.getElementById("orderNewShopRoute").value.trim();
+    const market = document.getElementById("orderNewShopMarket").value.trim();
+    const mobile = document.getElementById("orderNewShopMobile").value.trim();
+    const address = document.getElementById("orderNewShopAddress").value.trim();
+    const statusEl = document.getElementById("orderNewShopStatus");
+
+    if (!name) {
+      statusEl.textContent = "⚠️ দোকানের নাম দিতে হবে।";
+      statusEl.style.color = "red";
+      return;
+    }
+
+    try {
+      const docRef = await shopsCol.add({ name, route, market, mobile, address, createdAt: new Date() });
+      statusEl.textContent = "✅ দোকান যোগ হয়েছে ও বাছাই করা হয়েছে।";
+      statusEl.style.color = "green";
+      document.getElementById("orderNewShopName").value = "";
+      document.getElementById("orderNewShopMobile").value = "";
+      document.getElementById("orderNewShopAddress").value = "";
+      const routeEl = document.getElementById("orderNewShopRoute");
+      const marketEl = document.getElementById("orderNewShopMarket");
+      delete routeEl.dataset.userEdited;
+      delete marketEl.dataset.userEdited;
+      applyCurrentMarketToForms();
+      selectOrderShop({ id: docRef.id, name, route, market, mobile, address });
+      document.getElementById("orderNewShopForm").style.display = "none";
+      setTimeout(() => statusEl.textContent = "", 2500);
+    } catch (err) {
+      statusEl.textContent = "❌ ত্রুটি: " + err.message;
+      statusEl.style.color = "red";
+    }
+  };
+
+  // "৩ প্রোডাক্ট যোগ করুন" এর পাশের ৫/১০/২০/ফ্যামি/অন্যা চিপ দিয়ে ফিল্টার করার ফাংশন
+  let activeOrderCategoryFilter = null;
+  window.filterOrderProductsByCategory = function(value, btn) {
+    if (activeOrderCategoryFilter === value) {
+      activeOrderCategoryFilter = null;
+      btn.classList.remove("active");
+    } else {
+      activeOrderCategoryFilter = value;
+      document.querySelectorAll("#orderFilterBtnRow .filter-chip-sm").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+    const searchEl = document.getElementById("orderProductSearch");
+    renderOrderProductPicker(searchEl ? searchEl.value : "");
+  };
+
+  window.renderOrderProductPicker = function(filterText) {
+    const box = document.getElementById("orderProductPickerBox");
+    if (!box) return;
+    const term = (filterText || "").trim().toLowerCase();
+    let list = allProducts;
+    if (activeOrderCategoryFilter) {
+      list = list.filter((p) => (p.priceCategory || "") === activeOrderCategoryFilter);
+    }
+    if (term) {
+      list = list.filter((p) => [p.name, p.unitType].join(" ").toLowerCase().includes(term));
+    }
+    if (list.length === 0) {
+      box.innerHTML = `<div class="empty-hint">কোনো প্রোডাক্ট পাওয়া যায়নি</div>`;
+      return;
+    }
+    box.innerHTML = "";
+    list.forEach((p) => {
+      const div = document.createElement("div");
+      div.className = "pick-list-item";
+      const cartonInCart = !!orderCart[p.id];
+      const pieceKey = p.id + "_piece";
+      const pieceInCart = !!orderCart[pieceKey];
+      const pieceChip = p.allowPieceOrder
+        ? `<span class="add-chip piece-chip" data-piece="1">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস"}</span>`
+        : "";
+      div.innerHTML = `
+        <div>
+          <div class="pname">${p.name} <span class="unit-badge">${formatUnitBadge(p.unitType, p.piecesPerCarton)}</span></div>
+          <div class="pprice">${p.price} টাকা / ${p.unitType || "কার্টুন"}${p.allowPieceOrder && p.pieceOrderPrice ? ` · ${p.pieceOrderPrice} টাকা / পিস` : ""}</div>
+        </div>
+        <div class="add-chip-row">
+          <span class="add-chip">${cartonInCart ? `✓ ${p.unitType || "কার্টুন"}` : `+ ${p.unitType || "কার্টুন"}`}</span>
+          ${pieceChip}
+        </div>
+      `;
+      div.querySelector(".add-chip:not(.piece-chip)").onclick = (evt) => { evt.stopPropagation(); addToOrderCart(p, "carton"); };
+      const pieceEl = div.querySelector(".piece-chip");
+      if (pieceEl) pieceEl.onclick = (evt) => { evt.stopPropagation(); addToOrderCart(p, "piece"); };
+      box.appendChild(div);
+    });
+  };
+
+  window.addToOrderCart = function(product, mode) {
+    mode = mode || "carton";
+    if (mode === "piece") {
+      // "পিসে অর্ডার করার অনুমতি" আছে এমন প্রোডাক্ট কার্টুন থেকে আলাদা লাইন হিসেবে পিস আকারে কার্টে যোগ হয়
+      const key = product.id + "_piece";
+      if (orderCart[key]) {
+        orderCart[key].qty += 1;
+      } else {
+        orderCart[key] = {
+          name: product.name,
+          unitType: "পিস",
+          piecesPerCarton: null,
+          unitPrice: Number(product.pieceOrderPrice) || 0,
+          qty: 1
+        };
+      }
+    } else {
+      if (orderCart[product.id]) {
+        orderCart[product.id].qty += 1;
+      } else {
+        orderCart[product.id] = {
+          name: product.name,
+          unitType: product.unitType || "কার্টুন",
+          piecesPerCarton: product.piecesPerCarton,
+          unitPrice: Number(product.price) || 0,
+          qty: 1
+        };
+      }
+    }
+    renderOrderCart();
+    renderOrderProductPicker(document.getElementById("orderProductSearch").value);
+  };
+
+  window.changeCartQty = function(productId, delta) {
+    if (!orderCart[productId]) return;
+    orderCart[productId].qty += delta;
+    if (orderCart[productId].qty <= 0) delete orderCart[productId];
+    renderOrderCart();
+    renderOrderProductPicker(document.getElementById("orderProductSearch").value);
+  };
+
+  window.setCartQty = function(productId, value) {
+    if (!orderCart[productId]) return;
+    const num = Math.floor(Number(value));
+    if (!value || isNaN(num) || num <= 0) {
+      delete orderCart[productId];
+    } else {
+      orderCart[productId].qty = num;
+    }
+    renderOrderCart();
+    renderOrderProductPicker(document.getElementById("orderProductSearch").value);
+  };
+
+  window.renderOrderCart = function() {
+    const box = document.getElementById("orderCartBox");
+    const ids = Object.keys(orderCart);
+    if (ids.length === 0) {
+      box.innerHTML = `<div class="empty-hint">এখনো কোনো প্রোডাক্ট যোগ করা হয়নি</div>`;
+      document.getElementById("orderCartTotal").textContent = "০ টাকা";
+      return;
+    }
+    let grandTotal = 0;
+    box.innerHTML = "";
+    ids.forEach((id) => {
+      const item = orderCart[id];
+      const lineTotal = item.qty * item.unitPrice;
+      grandTotal += lineTotal;
+      const row = document.createElement("div");
+      row.className = "cart-row";
+      row.innerHTML = `
+        <div>
+          <div class="cart-name">${item.name} <span class="unit-badge">${formatUnitBadge(item.unitType, item.piecesPerCarton)}</span></div>
+          <div class="cart-sub">${item.unitPrice} × ${item.qty} = ${lineTotal} টাকা</div>
+        </div>
+        <div class="cart-qty-box">
+          <button type="button" class="qty-btn" onclick="changeCartQty('${id}', -1)">−</button>
+          <input type="number" class="qty-input" min="1" value="${item.qty}" onchange="setCartQty('${id}', this.value)" onclick="this.select()">
+          <button type="button" class="qty-btn" onclick="changeCartQty('${id}', 1)">+</button>
+        </div>
+      `;
+      box.appendChild(row);
+    });
+    document.getElementById("orderCartTotal").textContent = grandTotal + " টাকা";
+  };
+
+  window.saveOrder = async function() {
+    const statusEl = document.getElementById("orderSaveStatus");
+    const ids = Object.keys(orderCart);
+
+    if (!selectedOrderShop) {
+      statusEl.textContent = "⚠️ প্রথমে একটি দোকান বাছাই করুন।";
+      statusEl.style.color = "red";
+      return;
+    }
+    if (ids.length === 0) {
+      statusEl.textContent = "⚠️ কমপক্ষে একটি প্রোডাক্ট যোগ করুন।";
+      statusEl.style.color = "red";
+      return;
+    }
+
+    const items = ids.map((id) => {
+      const item = orderCart[id];
+      return {
+        productId: id,
+        name: item.name,
+        unitType: item.unitType,
+        piecesPerCarton: item.piecesPerCarton ?? null,
+        unitPrice: item.unitPrice,
+        qty: item.qty,
+        lineTotal: item.qty * item.unitPrice
+      };
+    });
+    const grandTotal = items.reduce((sum, it) => sum + it.lineTotal, 0);
+    // রুট ও বাজার এখন দোকানের নিজস্ব ডেটা থেকেই আসে — আলাদা করে টাইপ/সিলেক্ট করা লাগে না,
+    // তাই একই দোকানের অর্ডারে ভিন্ন ভিন্ন রুট লেখা হয়ে যাওয়ার সুযোগ নেই।
+    try {
+      await ordersCol.add({
+        shopId: selectedOrderShop.id,
+        shopName: selectedOrderShop.name,
+        market: selectedOrderShop.market || "",
+        route: selectedOrderShop.route || "",
+        items,
+        grandTotal,
+        createdAt: new Date()
+      });
+
+      statusEl.textContent = "✅ অর্ডার সফলভাবে সেভ হয়েছে।";
+      statusEl.style.color = "green";
+
+      orderCart = {};
+      selectedOrderShop = null;
+      document.getElementById("orderSelectedShopBox").innerHTML = "";
+      renderOrderCart();
+      renderOrderProductPicker(document.getElementById("orderProductSearch").value);
+      setTimeout(() => statusEl.textContent = "", 3000);
+    } catch (err) {
+      statusEl.textContent = "❌ ত্রুটি: " + err.message;
+      statusEl.style.color = "red";
+    }
+  };
+
+  // ================= অর্ডার হিস্টোরি =================
+  let allOrders = [];
+  let currentModalOrderId = null;
+
+  window.renderOrderHistory = function(filterText) {
+    const box = document.getElementById("orderHistoryBox");
+    if (!box) return;
+    const term = (filterText || "").trim().toLowerCase();
+    let list = allOrders;
+    if (term) {
+      list = list.filter((o) => [o.shopName, o.market, o.route].join(" ").toLowerCase().includes(term));
+    }
+    if (list.length === 0) {
+      box.innerHTML = `<div class="empty-hint">কোনো অর্ডার পাওয়া যায়নি</div>`;
+      return;
+    }
+    box.innerHTML = "";
+    list.forEach((o, index) => {
+      const dateStr = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString("bn-BD") : "";
+      const div = document.createElement("div");
+      div.className = "order-card";
+      div.innerHTML = `
+        <div class="order-serial">${index + 1}</div>
+        <div class="order-body">
+        <div class="order-top">
+          <div>
+            <div class="order-shop">${o.shopName}${o.market ? `<span class="market-badge">${o.market}</span>` : ""}${o.route ? `<span class="route-badge">🛣️ ${o.route}</span>` : ""}</div>
+            <div class="order-date">${dateStr}</div>
+          </div>
+          <div class="order-amount">${o.grandTotal} টাকা</div>
+        </div>
+        <div class="order-items-count">${(o.items || []).length} টি প্রোডাক্ট</div>
+        </div>
+      `;
+      div.onclick = () => openOrderDetails(o.id);
+      box.appendChild(div);
+    });
+  };
+
+  window.openOrderDetails = function(id) {
+    const o = allOrders.find((x) => x.id === id);
+    if (!o) return;
+    currentModalOrderId = id;
+    const dateStr = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString("bn-BD") : "";
+    document.getElementById("orderDetailShopName").textContent = o.shopName;
+    document.getElementById("orderDetailMeta").textContent = `${o.route ? "রুট: " + o.route + " · " : ""}${o.market ? o.market + " · " : ""}${dateStr}`;
+    const itemsBox = document.getElementById("orderDetailItems");
+    itemsBox.innerHTML = "";
+    (o.items || []).forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "cart-row";
+      row.innerHTML = `
+        <div>
+          <div class="cart-name">${item.name} <span class="unit-badge">${formatUnitBadge(item.unitType, item.piecesPerCarton)}</span></div>
+          <div class="cart-sub">${item.unitPrice} × ${item.qty} = ${item.lineTotal} টাকা</div>
+        </div>
+      `;
+      itemsBox.appendChild(row);
+    });
+    document.getElementById("orderDetailTotal").textContent = o.grandTotal + " টাকা";
+    document.getElementById("orderDetailModal").classList.add("open");
+  };
+
+  window.closeOrderDetails = function() {
+    document.getElementById("orderDetailModal").classList.remove("open");
+    currentModalOrderId = null;
+  };
+
+  window.closeOrderDetailsOnOverlay = function(e) {
+    if (e.target.id === "orderDetailModal") closeOrderDetails();
+  };
+
+  window.deleteOrderFromModal = async function() {
+    if (!currentModalOrderId) return;
+    if (confirm("আপনি কি নিশ্চিত এই অর্ডারটি মুছে ফেলতে চান?")) {
+      await ordersCol.doc(currentModalOrderId).delete();
+      closeOrderDetails();
+    }
+  };
+
+  // দোকান রিয়েল-টাইম লিস্টেনার
+  shopsCol.orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+    allShops = [];
+    snapshot.forEach((docSnap) => allShops.push({ id: docSnap.id, ...docSnap.data() }));
+    const shopSearchEl = document.getElementById("shopSearchInput");
+    if (shopSearchEl) renderShopList(shopSearchEl.value);
+    const orderShopSearchEl = document.getElementById("orderShopSearch");
+    if (orderShopSearchEl) renderOrderShopPicker(orderShopSearchEl.value);
+  }, (error) => {
+    const box = document.getElementById("shopListBox");
+    if (box) box.innerHTML = `<div class="empty-hint" style="color:red;">ত্রুটি: ${error.message}</div>`;
+  });
+
+  // অর্ডার রিয়েল-টাইম লিস্টেনার
+  ordersCol.orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+    allOrders = [];
+    snapshot.forEach((docSnap) => allOrders.push({ id: docSnap.id, ...docSnap.data() }));
+    const historySearchEl = document.getElementById("historySearchInput");
+    if (historySearchEl) renderOrderHistory(historySearchEl.value);
+  }, (error) => {
+    const box = document.getElementById("orderHistoryBox");
+    if (box) box.innerHTML = `<div class="empty-hint" style="color:red;">ত্রুটি: ${error.message}</div>`;
+  });
 
   // রিয়েল-টাইম লিস্টেনার — তালিকা লোড ও রেন্ডার
   productsCol.orderBy("createdAt", "desc").onSnapshot((snapshot) => {
