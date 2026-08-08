@@ -361,6 +361,33 @@
   .shop-card.selected { border-color: var(--gold); background: var(--brick-soft); }
   .shop-card .shop-name { font-weight: 700; color: var(--ink); font-size: 15px; }
   .shop-card .shop-meta { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+  /* ---------- নতুন দোকানের নাম টাইপ করার সময় মিল-থাকা দোকানের সাজেশন ---------- */
+  .name-suggest-box {
+    position: relative;
+  }
+  .name-suggest-list {
+    position: absolute;
+    left: 0; right: 0; top: 100%;
+    margin-top: 4px;
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    z-index: 20;
+    overflow: hidden;
+    display: none;
+  }
+  .name-suggest-list.open { display: block; }
+  .name-suggest-item {
+    padding: 9px 13px;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    border-bottom: 1px solid var(--rule);
+  }
+  .name-suggest-item:last-child { border-bottom: none; }
+  .name-suggest-item:hover { background: #eef5f2; }
   .market-badge {
     display: inline-block;
     background: #eef5f2;
@@ -598,6 +625,52 @@
   }
   .filter-chip-sm.active .dot { background: #fff; }
 
+  /* ---------- প্রিন্ট-অনলি রিপোর্ট এরিয়া ---------- */
+  #printReportArea { display: none; }
+  @media print {
+    body * { visibility: hidden; }
+    #printReportArea, #printReportArea * { visibility: visible; }
+    #printReportArea {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 20px;
+    }
+  }
+
+  /* ---------- প্রোডাক্ট রিপোর্ট টেবিল ---------- */
+  #productReportBox table { font-size: 13.5px; }
+  #productReportBox th { font-size: 12px; }
+  #productReportBox .report-total-row td {
+    font-weight: 700;
+    background: var(--brick-soft);
+    color: var(--gold-deep);
+  }
+
+  /* ---------- হিস্টোরি সারাংশ বার ---------- */
+  .history-summary-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--brick-soft);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin: 12px 0 4px;
+    font-size: 13.5px;
+  }
+  .history-summary-bar .hs-count { color: var(--ink-soft); font-weight: 600; }
+  .history-summary-bar .hs-total { color: var(--gold-deep); font-weight: 700; font-size: 15px; }
+
+  .date-range-row {
+    display: none;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .date-range-row.open { display: flex; }
+  .date-range-row input[type="date"] { flex: 1; }
+
   .product-name-cell {
     cursor: pointer;
     color: var(--ink-soft);
@@ -794,9 +867,10 @@
   <div class="card" id="addCard" style="display:none;">
     <h3>➕ নতুন প্রোডাক্ট যোগ করুন</h3>
     <div class="form-grid">
-      <div class="full-width">
+      <div class="full-width name-suggest-box">
         <label>প্রোডাক্টের নাম</label>
-        <input type="text" id="productName" placeholder="যেমনঃ লাক্স সাবান">
+        <input type="text" id="productName" placeholder="যেমনঃ লাক্স সাবান" autocomplete="off" oninput="checkProductNameSuggestions(this.value)">
+        <div id="productNameSuggest" class="name-suggest-list"></div>
       </div>
       <div class="full-width">
         <label>প্যাকেজিং ধরন</label>
@@ -869,9 +943,10 @@
     <div class="card" id="addShopCard" style="display:none;">
       <h3>➕ নতুন দোকান যোগ করুন</h3>
       <div class="form-grid">
-        <div class="full-width">
+        <div class="full-width name-suggest-box">
           <label>দোকানের নাম</label>
-          <input type="text" id="shopName" placeholder="যেমনঃ রহিম স্টোর">
+          <input type="text" id="shopName" placeholder="যেমনঃ রহিম স্টোর" autocomplete="off" oninput="checkShopNameSuggestionsMain(this.value)">
+          <div id="shopNameSuggest" class="name-suggest-list"></div>
         </div>
         <input type="hidden" id="shopRoute">
         <div class="full-width">
@@ -916,9 +991,10 @@
       </div>
       <div id="orderNewShopForm" style="display:none;margin-top:14px;">
         <div class="form-grid">
-          <div class="full-width">
+          <div class="full-width name-suggest-box">
             <label>দোকানের নাম</label>
-            <input type="text" id="orderNewShopName" placeholder="যেমনঃ রহিম স্টোর">
+            <input type="text" id="orderNewShopName" placeholder="যেমনঃ রহিম স্টোর" autocomplete="off" oninput="checkShopNameSuggestions(this.value)">
+            <div id="orderNewShopNameSuggest" class="name-suggest-list"></div>
           </div>
           <input type="hidden" id="orderNewShopRoute">
           <div class="full-width">
@@ -974,12 +1050,35 @@
     <div class="card">
       <h3>📜 অর্ডার হিস্টোরি</h3>
       <input type="text" id="historySearchInput" class="search-box" placeholder="🔍 দোকানের নাম বা বাজার দিয়ে খুঁজুন..." oninput="renderOrderHistory(this.value)">
+      <div class="mini-filter-row" id="historyDateFilterRow">
+        <button type="button" class="filter-chip-sm" data-value="all" onclick="setHistoryDateFilter('all', this)">সব</button>
+        <button type="button" class="filter-chip-sm active" data-value="today" onclick="setHistoryDateFilter('today', this)">আজ</button>
+        <button type="button" class="filter-chip-sm" data-value="week" onclick="setHistoryDateFilter('week', this)">এই সপ্তাহ</button>
+        <button type="button" class="filter-chip-sm" data-value="month" onclick="setHistoryDateFilter('month', this)">এই মাস</button>
+        <button type="button" class="filter-chip-sm" data-value="custom" onclick="setHistoryDateFilter('custom', this)">কাস্টম তারিখ</button>
+      </div>
+      <div class="date-range-row" id="historyCustomRangeRow">
+        <input type="date" id="historyDateFrom" onchange="renderOrderHistory(document.getElementById('historySearchInput').value)">
+        <input type="date" id="historyDateTo" onchange="renderOrderHistory(document.getElementById('historySearchInput').value)">
+      </div>
+      <div class="history-summary-bar" id="historySummaryBar" style="display:none;">
+        <span class="hs-count" id="historySummaryCount"></span>
+        <span class="hs-total" id="historySummaryTotal"></span>
+      </div>
+      <div class="toggle-btn-row" id="productReportToggleRow" style="display:none;margin-bottom:10px;">
+        <button type="button" class="secondary-btn" onclick="toggleProductReport(this)">📊 প্রোডাক্ট অনুযায়ী রিপোর্ট দেখুন</button>
+      </div>
+      <div id="productReportBox" style="display:none;margin-bottom:16px;"></div>
       <div id="orderHistoryBox"><div class="empty-hint">লোড হচ্ছে...</div></div>
     </div>
   </div>
   <!-- /tab-history -->
 
+
 </div>
+
+<!-- শুধু প্রিন্ট করার সময় দেখা যাবে এমন রিপোর্ট এরিয়া, স্ক্রিনে সবসময় লুকানো থাকে -->
+<div id="printReportArea"></div>
 
 <!-- অর্ডার বিস্তারিত পপআপ -->
 <div id="orderDetailModal" class="modal-overlay" onclick="closeOrderDetailsOnOverlay(event)">
@@ -1260,8 +1359,30 @@
     if (isHidden) {
       card.scrollIntoView({ behavior: "smooth", block: "nearest" });
       if (cardId === "addShopCard" || cardId === "orderNewShopForm") applyCurrentMarketToForms();
+    } else {
+      const suggestId = { orderNewShopForm: "orderNewShopNameSuggest", addShopCard: "shopNameSuggest", addCard: "productNameSuggest" }[cardId];
+      if (suggestId) {
+        const suggestBox = document.getElementById(suggestId);
+        if (suggestBox) { suggestBox.classList.remove("open"); suggestBox.innerHTML = ""; }
+      }
     }
   };
+
+  // সাজেশন বক্সের বাইরে ক্লিক করলে সেটা বন্ধ হয়ে যাবে
+  document.addEventListener("click", function(e) {
+    [
+      ["orderNewShopNameSuggest", "orderNewShopName"],
+      ["shopNameSuggest", "shopName"],
+      ["productNameSuggest", "productName"]
+    ].forEach(([boxId, inputId]) => {
+      const box = document.getElementById(boxId);
+      const input = document.getElementById(inputId);
+      if (!box || !input) return;
+      if (e.target !== input && !box.contains(e.target)) {
+        box.classList.remove("open");
+      }
+    });
+  });
 
   // প্যাকেজিং ধরন (কার্টুন/বক্স/পলি/পাতা) অনুযায়ী ফর্মের লেবেল বদলানোর ফাংশন
   window.syncUnitLabels = function(unitType) {
@@ -1354,6 +1475,8 @@
 
       // ফর্ম রিসেট
       document.getElementById("productName").value = "";
+      const productSuggestBox = document.getElementById("productNameSuggest");
+      if (productSuggestBox) { productSuggestBox.classList.remove("open"); productSuggestBox.innerHTML = ""; }
       document.getElementById("unitType").value = "কার্টুন";
       syncUnitLabels("কার্টুন");
       document.getElementById("piecesPerCarton").value = "";
@@ -1595,6 +1718,8 @@
     try {
       await shopsCol.add({ name, route, market, mobile, address, createdAt: new Date() });
       document.getElementById("shopName").value = "";
+      const shopNameSuggestBox = document.getElementById("shopNameSuggest");
+      if (shopNameSuggestBox) { shopNameSuggestBox.classList.remove("open"); shopNameSuggestBox.innerHTML = ""; }
       document.getElementById("shopMobile").value = "";
       document.getElementById("shopAddress").value = "";
       const routeEl = document.getElementById("shopRoute");
@@ -1748,6 +1873,8 @@
       statusEl.textContent = "✅ দোকান যোগ হয়েছে ও বাছাই করা হয়েছে।";
       statusEl.style.color = "green";
       document.getElementById("orderNewShopName").value = "";
+      document.getElementById("orderNewShopNameSuggest").classList.remove("open");
+      document.getElementById("orderNewShopNameSuggest").innerHTML = "";
       document.getElementById("orderNewShopMobile").value = "";
       document.getElementById("orderNewShopAddress").value = "";
       const routeEl = document.getElementById("orderNewShopRoute");
@@ -1762,6 +1889,99 @@
       statusEl.textContent = "❌ ত্রুটি: " + err.message;
       statusEl.style.color = "red";
     }
+  };
+
+  // "নতুন দোকান যোগ করুন" ফর্মে নাম টাইপ করার সময় একই রুট/বাজারে মিলে যাওয়া দোকানের নাম সাজেস্ট করা (রি-ইউজেবল হেল্পার)
+  function renderShopNameSuggestList(boxId, typedName, onPick) {
+    const box = document.getElementById(boxId);
+    if (!box) return;
+    const term = (typedName || "").trim().toLowerCase();
+    if (!term) {
+      box.classList.remove("open");
+      box.innerHTML = "";
+      return;
+    }
+    const currentRoute = localStorage.getItem("sr_current_route") || "";
+    const currentMarket = localStorage.getItem("sr_current_market") || "";
+    let list = allShops;
+    if (currentRoute) list = list.filter((s) => s.route === currentRoute);
+    if (currentMarket) list = list.filter((s) => s.market === currentMarket);
+    list = list.filter((s) => (s.name || "").toLowerCase().includes(term));
+
+    if (list.length === 0) {
+      box.classList.remove("open");
+      box.innerHTML = "";
+      return;
+    }
+
+    box.innerHTML = "";
+    list.slice(0, 6).forEach((s) => {
+      const item = document.createElement("div");
+      item.className = "name-suggest-item";
+      item.textContent = s.name;
+      item.onclick = () => {
+        box.classList.remove("open");
+        box.innerHTML = "";
+        onPick(s);
+      };
+      box.appendChild(item);
+    });
+    box.classList.add("open");
+  }
+
+  // "নতুন অর্ডার" ট্যাবের ভেতরের নতুন-দোকান ফর্মের জন্য — সাজেশনে ক্লিক করলে সরাসরি সেই দোকান বাছাই হয়ে যাবে
+  window.checkShopNameSuggestions = function(typedName) {
+    renderShopNameSuggestList("orderNewShopNameSuggest", typedName, (s) => {
+      document.getElementById("orderNewShopForm").style.display = "none";
+      selectOrderShop(s);
+    });
+  };
+
+  // "দোকান তালিকা" ট্যাবের নতুন-দোকান ফর্মের জন্য — সাজেশনে ক্লিক করলে ফর্ম বন্ধ হয়ে দোকান তালিকায় সেই দোকানটা খুঁজে দেখানো হবে
+  window.checkShopNameSuggestionsMain = function(typedName) {
+    renderShopNameSuggestList("shopNameSuggest", typedName, (s) => {
+      document.getElementById("addShopCard").style.display = "none";
+      const toggleBtn = document.querySelector('.toggle-btn-row .secondary-btn[onclick*="addShopCard"]');
+      if (toggleBtn) toggleBtn.classList.remove("active");
+      document.getElementById("shopName").value = "";
+      const shopSearchEl = document.getElementById("shopSearchInput");
+      if (shopSearchEl) {
+        shopSearchEl.value = s.name;
+        renderShopList(s.name);
+        shopSearchEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
+  };
+
+  // "নতুন প্রোডাক্ট যোগ করুন" ফর্মে নাম টাইপ করার সময় মিলে যাওয়া প্রোডাক্টের নাম সাজেস্ট করা
+  window.checkProductNameSuggestions = function(typedName) {
+    const box = document.getElementById("productNameSuggest");
+    if (!box) return;
+    const term = (typedName || "").trim().toLowerCase();
+    if (!term) {
+      box.classList.remove("open");
+      box.innerHTML = "";
+      return;
+    }
+    const list = allProducts.filter((p) => (p.name || "").toLowerCase().includes(term));
+    if (list.length === 0) {
+      box.classList.remove("open");
+      box.innerHTML = "";
+      return;
+    }
+    box.innerHTML = "";
+    list.slice(0, 6).forEach((p) => {
+      const item = document.createElement("div");
+      item.className = "name-suggest-item";
+      item.textContent = p.name;
+      item.onclick = () => {
+        box.classList.remove("open");
+        box.innerHTML = "";
+        document.getElementById("productName").value = p.name;
+      };
+      box.appendChild(item);
+    });
+    box.classList.add("open");
   };
 
   // "৩ প্রোডাক্ট যোগ করুন" এর পাশের ৫/১০/২০/ফ্যামি/অন্যা চিপ দিয়ে ফিল্টার করার ফাংশন
@@ -1965,6 +2185,57 @@
   // ================= অর্ডার হিস্টোরি =================
   let allOrders = [];
   let currentModalOrderId = null;
+  let historyDateFilter = "today"; // all | today | week | month | custom
+  let lastFilteredOrders = [];
+
+  window.setHistoryDateFilter = function(value, btn) {
+    historyDateFilter = value;
+    document.querySelectorAll("#historyDateFilterRow .filter-chip-sm").forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    const rangeRow = document.getElementById("historyCustomRangeRow");
+    if (value === "custom") {
+      rangeRow.classList.add("open");
+    } else {
+      rangeRow.classList.remove("open");
+    }
+    renderOrderHistory(document.getElementById("historySearchInput").value);
+  };
+
+  function orderMatchesDateFilter(o) {
+    if (historyDateFilter === "all") return true;
+    const d = o.createdAt?.toDate ? o.createdAt.toDate() : null;
+    if (!d) return false;
+    const now = new Date();
+    if (historyDateFilter === "today") {
+      return d.toDateString() === now.toDateString();
+    }
+    if (historyDateFilter === "week") {
+      const weekAgo = new Date(now);
+      weekAgo.setDate(now.getDate() - 6);
+      weekAgo.setHours(0, 0, 0, 0);
+      return d >= weekAgo && d <= now;
+    }
+    if (historyDateFilter === "month") {
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    }
+    if (historyDateFilter === "custom") {
+      const fromVal = document.getElementById("historyDateFrom").value;
+      const toVal = document.getElementById("historyDateTo").value;
+      // দুটোর একটাই দিলে, শুধু সেই একদিনের হিস্টোরি দেখাবে
+      const effectiveFrom = fromVal || toVal;
+      const effectiveTo = toVal || fromVal;
+      if (effectiveFrom) {
+        const from = new Date(effectiveFrom + "T00:00:00");
+        if (d < from) return false;
+      }
+      if (effectiveTo) {
+        const to = new Date(effectiveTo + "T23:59:59");
+        if (d > to) return false;
+      }
+      return true;
+    }
+    return true;
+  }
 
   window.renderOrderHistory = function(filterText) {
     const box = document.getElementById("orderHistoryBox");
@@ -1974,6 +2245,29 @@
     if (term) {
       list = list.filter((o) => [o.shopName, o.market, o.route].join(" ").toLowerCase().includes(term));
     }
+    list = list.filter(orderMatchesDateFilter);
+    lastFilteredOrders = list;
+
+    const summaryBar = document.getElementById("historySummaryBar");
+    const reportToggleRow = document.getElementById("productReportToggleRow");
+    if (list.length > 0) {
+      const totalTaka = list.reduce((sum, o) => sum + (Number(o.grandTotal) || 0), 0);
+      document.getElementById("historySummaryCount").textContent = `${list.length} টি অর্ডার`;
+      document.getElementById("historySummaryTotal").textContent = `মোট ${totalTaka} টাকা`;
+      summaryBar.style.display = "flex";
+      reportToggleRow.style.display = "flex";
+    } else {
+      summaryBar.style.display = "none";
+      reportToggleRow.style.display = "none";
+      document.getElementById("productReportBox").style.display = "none";
+    }
+
+    // রিপোর্ট বক্স খোলা থাকলে ফিল্টার বদলানোর সাথে সাথে সেটাও রিফ্রেশ হবে
+    const reportBox = document.getElementById("productReportBox");
+    if (reportBox && reportBox.style.display !== "none") {
+      renderProductReport(list);
+    }
+
     if (list.length === 0) {
       box.innerHTML = `<div class="empty-hint">কোনো অর্ডার পাওয়া যায়নি</div>`;
       return;
@@ -1994,12 +2288,158 @@
           <div class="order-amount">${o.grandTotal} টাকা</div>
         </div>
         <div class="order-items-count">${(o.items || []).length} টি প্রোডাক্ট</div>
+
         </div>
       `;
       div.onclick = () => openOrderDetails(o.id);
       box.appendChild(div);
     });
   };
+
+  // "📊 প্রোডাক্ট অনুযায়ী রিপোর্ট" বাটন — বর্তমান ফিল্টার করা অর্ডারগুলো থেকে প্রোডাক্ট-ভিত্তিক সারাংশ দেখানো/লুকানো
+  // ফিল্টার করা অর্ডারগুলো থেকে প্রোডাক্ট-ভিত্তিক সারাংশ ডেটা বানানো (রিপোর্ট দেখানো ও প্রিন্ট করা — দুই জায়গায় ব্যবহৃত)
+  function buildProductReportData(orders) {
+    const grouped = {}; // key -> { name, unitType, piecesPerCarton, qty, total }
+    orders.forEach((o) => {
+      (o.items || []).forEach((item) => {
+        const key = `${(item.name || "").trim()}|${item.unitType || ""}`;
+        if (!grouped[key]) {
+          grouped[key] = {
+            name: item.name,
+            unitType: item.unitType,
+            piecesPerCarton: item.piecesPerCarton,
+            qty: 0,
+            total: 0
+          };
+        }
+        grouped[key].qty += Number(item.qty) || 0;
+        grouped[key].total += Number(item.lineTotal) || 0;
+      });
+    });
+    const rows = Object.values(grouped).sort((a, b) => b.total - a.total);
+    const grandQty = rows.reduce((s, r) => s + r.qty, 0);
+    const grandTotal = rows.reduce((s, r) => s + r.total, 0);
+    return { rows, grandQty, grandTotal };
+  }
+
+  // বর্তমানে সিলেক্ট করা তারিখ ফিল্টার অনুযায়ী রিপোর্টের সময়কাল লেখা তৈরি করা
+  function getHistoryPeriodLabel() {
+    if (historyDateFilter === "today") return "আজকের রিপোর্ট";
+    if (historyDateFilter === "week") return "গত ৭ দিনের রিপোর্ট";
+    if (historyDateFilter === "month") return "এই মাসের রিপোর্ট";
+    if (historyDateFilter === "custom") {
+      const fromVal = document.getElementById("historyDateFrom").value;
+      const toVal = document.getElementById("historyDateTo").value;
+      if (fromVal && toVal && fromVal !== toVal) return `${fromVal} থেকে ${toVal} পর্যন্ত রিপোর্ট`;
+      if (fromVal || toVal) return `${fromVal || toVal} তারিখের রিপোর্ট`;
+      return "কাস্টম রিপোর্ট";
+    }
+    return "সব সময়ের রিপোর্ট";
+  }
+
+  window.toggleProductReport = function(btn) {
+    const box = document.getElementById("productReportBox");
+    const isHidden = box.style.display === "none";
+    if (isHidden) {
+      renderProductReport(lastFilteredOrders);
+      box.style.display = "block";
+      btn.classList.add("active");
+      box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } else {
+      box.style.display = "none";
+      btn.classList.remove("active");
+    }
+  };
+
+  // ফিল্টার করা অর্ডারগুলোর সব প্রোডাক্ট একসাথে যোগ করে প্রোডাক্ট-ভিত্তিক রিপোর্ট বানানো
+  window.renderProductReport = function(orders) {
+    const box = document.getElementById("productReportBox");
+    if (!box) return;
+
+    const { rows, grandQty, grandTotal } = buildProductReportData(orders);
+
+    if (rows.length === 0) {
+      box.innerHTML = `<div class="empty-hint">এই তালিকায় কোনো প্রোডাক্ট নেই</div>`;
+      return;
+    }
+
+    let rowsHtml = "";
+    rows.forEach((r) => {
+      rowsHtml += `
+        <tr>
+          <td>${r.name} <span class="unit-badge">${formatUnitBadge(r.unitType, r.piecesPerCarton)}</span></td>
+          <td>${r.qty}</td>
+          <td>${r.total} টাকা</td>
+        </tr>
+      `;
+    });
+
+    box.innerHTML = `
+      <div class="toggle-btn-row" style="margin-bottom:10px;">
+        <button type="button" onclick="printProductReport()">🖨️ প্রিন্ট করুন</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>প্রোডাক্ট</th><th>মোট পরিমাণ</th><th>মোট টাকা</th></tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+          <tr class="report-total-row">
+            <td>সর্বমোট</td>
+            <td>${grandQty}</td>
+            <td>${grandTotal} টাকা</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+  };
+
+  // প্রোডাক্ট রিপোর্ট প্রিন্ট করার ফাংশন — একটা প্রিন্ট-ফ্রেন্ডলি এরিয়া তৈরি করে ব্রাউজারের প্রিন্ট ডায়ালগ খুলবে
+  window.printProductReport = function() {
+    const printArea = document.getElementById("printReportArea");
+    if (!printArea) return;
+
+    const { rows, grandQty, grandTotal } = buildProductReportData(lastFilteredOrders);
+    if (rows.length === 0) return;
+
+    const periodLabel = getHistoryPeriodLabel();
+    const generatedStr = new Date().toLocaleString("bn-BD");
+    const searchTerm = document.getElementById("historySearchInput").value.trim();
+
+    let rowsHtml = "";
+    rows.forEach((r, i) => {
+      rowsHtml += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${r.name} (${formatUnitBadge(r.unitType, r.piecesPerCarton)})</td>
+          <td>${r.qty}</td>
+          <td>${r.total} টাকা</td>
+        </tr>
+      `;
+    });
+
+    printArea.innerHTML = `
+      <h2>📊 প্রোডাক্ট বিক্রয় রিপোর্ট</h2>
+      <p><strong>${periodLabel}</strong>${searchTerm ? ` · সার্চঃ "${searchTerm}"` : ""}</p>
+      <p style="font-size:12px;color:#555;">তৈরি হয়েছে: ${generatedStr}</p>
+      <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;margin-top:10px;">
+        <thead>
+          <tr><th>ক্রম</th><th>প্রোডাক্ট</th><th>মোট পরিমাণ</th><th>মোট টাকা</th></tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+          <tr style="font-weight:bold;">
+            <td colspan="2">সর্বমোট</td>
+            <td>${grandQty}</td>
+            <td>${grandTotal} টাকা</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    window.print();
+  };
+
 
   window.openOrderDetails = function(id) {
     const o = allOrders.find((x) => x.id === id);
