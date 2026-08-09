@@ -860,6 +860,26 @@
     border-color: #c7dcf0;
     margin-left: 4px;
   }
+  .stock-toggle-btn {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 4px;
+    cursor: pointer;
+    border: 1px solid #cfe3dc;
+    background: #eef5f2;
+    color: var(--sage);
+    vertical-align: middle;
+  }
+  .stock-toggle-btn.is-out {
+    background: #fbe2e1;
+    color: var(--gold-deep);
+    border-color: #f0c3c1;
+  }
+  tr.out-of-stock-row { opacity: 0.55; }
+  tr.out-of-stock-row .product-name-cell { text-decoration: line-through; }
 
   /* ---------- পপআপ ---------- */
   .modal-overlay {
@@ -1809,13 +1829,24 @@
     tbody.innerHTML = "";
     list.forEach((d) => {
       const row = document.createElement("tr");
+      if (d.outOfStock) row.classList.add("out-of-stock-row");
+      const stockBtn = `<span class="stock-toggle-btn${d.outOfStock ? " is-out" : ""}" title="স্টক আছে/নাই টগল করুন" onclick="event.stopPropagation(); toggleStock('${d.id}', ${!!d.outOfStock})">${d.outOfStock ? "🚫 স্টক নাই" : "✔️ স্টক আছে"}</span>`;
       row.innerHTML = `
-        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${formatUnitBadge(d.unitType, d.piecesPerCarton)}</span>${d.allowPieceOrder ? `<span class="unit-badge piece-allowed-badge">পিস অনুমতি</span>` : ""}</td>
+        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${formatUnitBadge(d.unitType, d.piecesPerCarton)}</span>${d.allowPieceOrder ? `<span class="unit-badge piece-allowed-badge">পিস অনুমতি</span>` : ""}${stockBtn}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="price" data-type="number" onblur="handleCellEdit(this)">${d.price}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)">${d.freePrice ?? 0}</td>
       `;
       tbody.appendChild(row);
     });
+  };
+
+  // প্রোডাক্টের স্টক আছে/নাই টগল করার ফাংশন — তালিকা পেইজ থেকে এক ক্লিকে মার্ক করা যাবে
+  window.toggleStock = async function(id, currentlyOut) {
+    try {
+      await productsCol.doc(id).update({ outOfStock: !currentlyOut });
+    } catch (e) {
+      alert("স্টক স্ট্যাটাস পরিবর্তন করা যায়নি: " + e.message);
+    }
   };
 
   // পপআপে প্রোডাক্টের বিস্তারিত দেখানো
@@ -2640,7 +2671,7 @@
     const box = document.getElementById("orderProductPickerBox");
     if (!box) return;
     const term = (filterText || "").trim().toLowerCase();
-    let list = allProducts;
+    let list = allProducts.filter((p) => !p.outOfStock); // স্টক নাই মার্ক করা প্রোডাক্ট অর্ডার পিকার থেকে বাদ যাবে
     if (activeOrderCategoryFilter) {
       if (activeOrderCategoryFilter === "__none__") {
         list = list.filter((p) => !p.priceCategory);
@@ -2665,13 +2696,14 @@
       // "ফ্রি সহ বিক্রয়মূল্য" শুধু তখনই ধরা হবে যখন এটা একটা প্রকৃত পজিটিভ সংখ্যা — খালি/০ থাকলে দাম ০ ধরা যাবে না
       const hasFreePrice = Number(p.freePrice) > 0;
       const freeQty = Number(p.freeQty) || 0;
-      const pieceChip = p.allowPieceOrder
-        ? `<span class="add-chip piece-chip" data-piece="1">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস"}</span>`
-        : "";
       const priceLine = hasFreePrice
         ? `<span style="text-decoration:line-through;color:var(--muted);">${p.price} টাকা</span> <strong style="color:var(--gold-deep);">${p.freePrice} টাকা (ফ্রি সহ)</strong>`
         : `${p.price} টাকা`;
       const freeNote = freeQty > 0 ? ` · <strong>🎁 ${freeQty} পিস ফ্রি</strong>` : "";
+
+      const pieceChip = p.allowPieceOrder
+        ? `<span class="add-chip piece-chip" data-piece="1">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস"}</span>`
+        : "";
       div.innerHTML = `
         <div>
           <div class="pname">${p.name} <span class="unit-badge">${formatUnitBadge(p.unitType, p.piecesPerCarton)}</span></div>
