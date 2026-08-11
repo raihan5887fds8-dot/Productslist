@@ -1019,10 +1019,9 @@
     <div class="mini-filter-row" id="filterBtnRow">
       <button type="button" class="filter-chip-sm" data-value="৫" onclick="filterByPiecePrice('৫', this)"><span class="dot"></span>৫</button>
       <button type="button" class="filter-chip-sm" data-value="১০" onclick="filterByPiecePrice('১০', this)"><span class="dot"></span>১০</button>
-      <button type="button" class="filter-chip-sm" data-value="২০" onclick="filterByPiecePrice('২০', this)"><span class="dot"></span>২০</button>
       <button type="button" class="filter-chip-sm" data-value="ফ্যামিলি" onclick="filterByPiecePrice('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামিলি</button>
       <button type="button" class="filter-chip-sm" data-value="অন্যান্য" onclick="filterByPiecePrice('অন্যান্য', this)"><span class="dot"></span>অন্যান্য</button>
-      <button type="button" class="filter-chip-sm" data-value="__none__" onclick="filterByPiecePrice('__none__', this)" title="যেসব প্রোডাক্টে কোনো ফিল্টার বাটন সেট করা নেই"><span class="dot"></span>❓ বাটনহীন</button>
+      <button type="button" class="filter-chip-sm" data-value="__none__" onclick="filterByPiecePrice('__none__', this)" title="যেসব প্রোডাক্টে কোনো ফিল্টার বাটন সেট করা নেই"><span class="dot"></span>❓</button>
     </div>
     <input type="text" id="searchInput" class="search-box" placeholder="🔍 নাম, দাম, পিস — যেকোনো কিছু দিয়ে সার্চ করুন..." oninput="renderTable(this.value)">
     <table>
@@ -1062,22 +1061,22 @@
       </div>
       <div>
         <label id="piecesPerCartonLabel">এক কার্টুনে কয় পিস আঁটে</label>
-        <input type="number" id="piecesPerCarton" placeholder="যেমনঃ 72">
+        <input type="number" id="piecesPerCarton" placeholder="যেমনঃ 72" oninput="recalcAddPieceOrderPrice()">
       </div>
       <div>
         <label id="productPriceLabel">প্রোডাক্টের দাম (প্রতি কার্টুন)</label>
-        <input type="number" id="productPrice" placeholder="টাকা">
+        <input type="number" id="productPrice" placeholder="টাকা" oninput="recalcAddPieceOrderPrice()">
       </div>
       <div class="full-width" style="display:flex;align-items:center;gap:8px;background:#f9f5f2;border:1.5px solid var(--rule);border-radius:8px;padding:10px 12px;">
-        <input type="checkbox" id="allowPieceOrder" style="width:18px;height:18px;margin:0;flex-shrink:0;" onchange="togglePieceOrderField(this.checked, 'pieceOrderPriceWrap')">
+        <input type="checkbox" id="allowPieceOrder" style="width:18px;height:18px;margin:0;flex-shrink:0;" onchange="togglePieceOrderField(this.checked, 'pieceOrderPriceWrap'); recalcAddPieceOrderPrice();">
         <label style="margin:0;color:var(--text);" for="allowPieceOrder">পিসে অর্ডার করার অনুমতি দিন (যেমনঃ ব্যাটারি — কার্টুন থেকে পিস কেটে অর্ডার করা যাবে)</label>
       </div>
       <div class="full-width" id="pieceOrderPriceWrap" style="display:none;">
-        <label>পিস প্রতি বিক্রয় মূল্য</label>
-        <input type="number" id="pieceOrderPrice" placeholder="যেমনঃ কার্টুন ২৪০ টাকা, ২৪ পিস হলে ১০ টাকা">
+        <label>পিস প্রতি বিক্রয় মূল্য <span style="font-weight:400;color:var(--muted);">(কার্টুন দাম ÷ (পিস+ফ্রি) — অটো বসে, চাইলে বদলানো যায়)</span></label>
+        <input type="number" id="pieceOrderPrice" placeholder="যেমনঃ কার্টুন ২৪০ টাকা, ২৪ পিস হলে ১০ টাকা" oninput="this.dataset.userEdited='1'">
       </div>
       <div>
-        <label>পিস বিক্রয় মূল্য</label>
+        <label>MRP</label>
         <input type="text" id="piecePrice" placeholder="যেমনঃ ৫, ১০, ২০ বা ফ্যামিলি">
       </div>
       <div>
@@ -1093,11 +1092,11 @@
       </div>
       <div>
         <label>কয়টা ফ্রি (পিস)</label>
-        <input type="number" id="freeQty" placeholder="যেমনঃ 2" min="0">
+        <input type="number" id="freeQty" placeholder="যেমনঃ 2" min="0" oninput="recalcAddPieceOrderPrice()">
       </div>
       <div>
         <label>ফ্রি সহ বিক্রয়মূল্য</label>
-        <input type="number" id="freePrice" placeholder="টাকা">
+        <input type="number" id="freePrice" placeholder="টাকা" oninput="recalcAddPieceOrderPrice()">
       </div>
     </div>
     <button onclick="addProduct()">প্রোডাক্ট যোগ করুন</button>
@@ -1252,7 +1251,6 @@
         <div class="mini-filter-row" id="orderFilterBtnRow">
           <button type="button" class="filter-chip-sm" data-value="৫" onclick="filterOrderProductsByCategory('৫', this)"><span class="dot"></span>৫</button>
           <button type="button" class="filter-chip-sm" data-value="১০" onclick="filterOrderProductsByCategory('১০', this)"><span class="dot"></span>১০</button>
-          <button type="button" class="filter-chip-sm" data-value="২০" onclick="filterOrderProductsByCategory('২০', this)"><span class="dot"></span>২০</button>
           <button type="button" class="filter-chip-sm" data-value="ফ্যামিলি" onclick="filterOrderProductsByCategory('ফ্যামিলি', this)"><span class="dot"></span>ফ্যামি</button>
           <button type="button" class="filter-chip-sm" data-value="অন্যান্য" onclick="filterOrderProductsByCategory('অন্যান্য', this)"><span class="dot"></span>অন্যা</button>
           <button type="button" class="filter-chip-sm" data-value="__none__" onclick="filterOrderProductsByCategory('__none__', this)" title="যেসব প্রোডাক্টে কোনো ফিল্টার বাটন সেট করা নেই"><span class="dot"></span>❓</button>
@@ -1334,18 +1332,18 @@
     </div>
     <div class="modal-field">
       <label id="modalPiecesLabel">প্রতি কার্টুনে পিস</label>
-      <div id="modalPieces" contenteditable="true" data-field="piecesPerCarton" data-type="number" onblur="handleCellEdit(this)"></div>
+      <div id="modalPieces" contenteditable="true" data-field="piecesPerCarton" data-type="number" onblur="handlePiecesEdit(this)"></div>
     </div>
     <div class="modal-field" style="display:flex;align-items:center;gap:8px;">
       <input type="checkbox" id="modalAllowPieceOrder" style="width:18px;height:18px;margin:0;flex-shrink:0;" onchange="handleAllowPieceOrderChange(this)">
       <label style="margin:0;" for="modalAllowPieceOrder">পিসে অর্ডার করার অনুমতি দিন</label>
     </div>
     <div class="modal-field" id="modalPieceOrderPriceWrap" style="display:none;">
-      <label>পিস প্রতি বিক্রয় মূল্য</label>
-      <div id="modalPieceOrderPrice" contenteditable="true" data-field="pieceOrderPrice" data-type="number" onblur="handleCellEdit(this)"></div>
+      <label>পিস প্রতি বিক্রয় মূল্য <span style="font-weight:400;color:var(--muted);">(কার্টুন দাম ÷ (পিস+ফ্রি) — অটো বসে, চাইলে বদলানো যায়)</span></label>
+      <div id="modalPieceOrderPrice" contenteditable="true" data-field="pieceOrderPrice" data-type="number" oninput="this.dataset.userEdited='1'" onblur="handleCellEdit(this)"></div>
     </div>
     <div class="modal-field">
-      <label>পিস বিক্রয় মূল্য</label>
+      <label>MRP</label>
       <div id="modalPiecePrice" contenteditable="true" data-field="piecePrice" onblur="handleCellEdit(this)"></div>
     </div>
     <div class="modal-field">
@@ -1361,11 +1359,11 @@
     </div>
     <div class="modal-field">
       <label>কয়টা ফ্রি</label>
-      <div id="modalFreeQty" contenteditable="true" data-field="freeQty" data-type="number" onblur="handleCellEdit(this)"></div>
+      <div id="modalFreeQty" contenteditable="true" data-field="freeQty" data-type="number" onblur="handleFreeQtyEdit(this)"></div>
     </div>
     <div class="modal-field">
       <label>ফ্রি সহ বিক্রয়মূল্য</label>
-      <div id="modalFreePrice" contenteditable="true" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)"></div>
+      <div id="modalFreePrice" contenteditable="true" data-field="freePrice" data-type="number" onblur="handleFreePriceEdit(this)"></div>
     </div>
 
     <div class="modal-danger-zone">
@@ -1629,6 +1627,94 @@
     if (wrap) wrap.style.display = checked ? "" : "none";
   };
 
+  // ফ্রি সহ বিক্রয়মূল্য (freePrice) সেট থাকলে সেটাই আসল দাম হিসেবে ধরা হয় (কারণ তখন এটাই কার্টুনের জন্য প্রকৃত পরিশোধিত দাম), না থাকলে সাধারণ price
+  function effectivePriceForCalc(price, freePrice) {
+    const fp = Number(freePrice);
+    return fp > 0 ? fp : price;
+  }
+
+  // কার্টুনের দাম, প্রতি কার্টুনে পিস ও (থাকলে) ফ্রি পিস থেকে "পিস প্রতি বিক্রয় মূল্য" ক্যালকুলেট করার হেল্পার —
+  // ফ্রি পিস থাকলে সেটাও মোট পিসের সাথে যোগ হবে, কারণ একই দামে বাড়তি পিসও পাওয়া যাচ্ছে
+  function calcPieceOrderPrice(price, pieces, freeQty) {
+    const p = Number(price);
+    const q = (Number(pieces) || 0) + (Number(freeQty) || 0);
+    if (!p || !q) return null;
+    const val = p / q;
+    return Math.round(val * 100) / 100;
+  }
+
+  // নতুন প্রোডাক্ট ফর্মে পিস/দাম/ফ্রি বদলালে "পিস প্রতি বিক্রয় মূল্য" অটো-ক্যালকুলেট করে বসিয়ে দেয় —
+  // ইউজার ম্যানুয়ালি ফিল্ডটা এডিট করলে (dataset.userEdited) আর অটো-বসানো হয় না
+  window.recalcAddPieceOrderPrice = function() {
+    const el = document.getElementById("pieceOrderPrice");
+    if (!el || el.dataset.userEdited === "1") return;
+    const pieces = document.getElementById("piecesPerCarton").value;
+    const price = document.getElementById("productPrice").value;
+    const freePrice = document.getElementById("freePrice").value;
+    const freeQty = document.getElementById("freeQty").value;
+    const val = calcPieceOrderPrice(effectivePriceForCalc(price, freePrice), pieces, freeQty);
+    el.value = val !== null ? val : "";
+  };
+
+  // পপআপে "প্রতি কার্টুনে পিস" এডিট করার পর মূল সেভ + পিস প্রতি বিক্রয় মূল্য অটো-রিক্যালকুলেট (ম্যানুয়ালি এডিট না করা থাকলে)
+  window.handlePiecesEdit = async function(el) {
+    await handleCellEdit(el);
+    const id = el.dataset.id;
+    const priceEl = document.getElementById("modalPieceOrderPrice");
+    if (!priceEl || priceEl.dataset.userEdited === "1") return;
+    const product = allProducts.find((p) => p.id === id);
+    if (!product || !product.allowPieceOrder) return;
+    const val = calcPieceOrderPrice(effectivePriceForCalc(product.price, product.freePrice), el.textContent.trim(), product.freeQty);
+    if (val === null) return;
+    priceEl.textContent = val;
+    try {
+      await productsCol.doc(id).update({ pieceOrderPrice: val });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  // পপআপে "কয়টা ফ্রি" এডিট করার পর মূল সেভ + পিস প্রতি বিক্রয় মূল্য অটো-রিক্যালকুলেট (ম্যানুয়ালি এডিট না করা থাকলে)
+  window.handleFreeQtyEdit = async function(el) {
+    await handleCellEdit(el);
+    const id = el.dataset.id;
+    const priceEl = document.getElementById("modalPieceOrderPrice");
+    if (!priceEl || priceEl.dataset.userEdited === "1") return;
+    const product = allProducts.find((p) => p.id === id);
+    if (!product || !product.allowPieceOrder) return;
+    const piecesEl = document.getElementById("modalPieces");
+    const pieces = (piecesEl ? piecesEl.textContent.trim() : "") || product.piecesPerCarton;
+    const val = calcPieceOrderPrice(effectivePriceForCalc(product.price, product.freePrice), pieces, el.textContent.trim());
+    if (val === null) return;
+    priceEl.textContent = val;
+    try {
+      await productsCol.doc(id).update({ pieceOrderPrice: val });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+  // পপআপে "ফ্রি সহ বিক্রয়মূল্য" এডিট করার পর মূল সেভ + পিস প্রতি বিক্রয় মূল্য অটো-রিক্যালকুলেট (ম্যানুয়ালি এডিট না করা থাকলে)
+  window.handleFreePriceEdit = async function(el) {
+    await handleCellEdit(el);
+    const id = el.dataset.id;
+    const priceEl = document.getElementById("modalPieceOrderPrice");
+    if (!priceEl || priceEl.dataset.userEdited === "1") return;
+    const product = allProducts.find((p) => p.id === id);
+    if (!product || !product.allowPieceOrder) return;
+    const piecesEl = document.getElementById("modalPieces");
+    const pieces = (piecesEl ? piecesEl.textContent.trim() : "") || product.piecesPerCarton;
+    const val2 = calcPieceOrderPrice(effectivePriceForCalc(product.price, el.textContent.trim()), pieces, product.freeQty);
+    if (val2 === null) return;
+    priceEl.textContent = val2;
+    try {
+      await productsCol.doc(id).update({ pieceOrderPrice: val2 });
+    } catch (err) {
+      alert("❌ আপডেট ব্যর্থ: " + err.message);
+    }
+  };
+
+
   // ডুপ্লিকেট প্রোডাক্ট স্বয়ংক্রিয়ভাবে মুছে ফেলার ফাংশন
   // (দু'বার বাল্ক ইমপোর্ট করার কারণে তৈরি হওয়া ডাবল ডাটা এক-বারের জন্য পরিষ্কার করে দেয়)
   let dedupInProgress = false;
@@ -1720,6 +1806,7 @@
       document.getElementById("freePrice").value = "";
       document.getElementById("allowPieceOrder").checked = false;
       document.getElementById("pieceOrderPrice").value = "";
+      delete document.getElementById("pieceOrderPrice").dataset.userEdited;
       togglePieceOrderField(false, "pieceOrderPriceWrap");
 
       statusEl.textContent = "✅ প্রোডাক্ট সফলভাবে যোগ হয়েছে।";
@@ -1878,6 +1965,12 @@
     const pieceOrderPriceEl = document.getElementById("modalPieceOrderPrice");
     pieceOrderPriceEl.textContent = p.pieceOrderPrice ?? "";
     pieceOrderPriceEl.dataset.id = id;
+    // আগে থেকে মান সেট থাকলে সেটাকে "ম্যানুয়ালি এডিট করা" হিসেবে ধরা হয়, যাতে পিস বদলালে বিদ্যমান মান হঠাৎ মুছে না যায়
+    if (p.pieceOrderPrice !== undefined && p.pieceOrderPrice !== null && p.pieceOrderPrice !== "") {
+      pieceOrderPriceEl.dataset.userEdited = "1";
+    } else {
+      delete pieceOrderPriceEl.dataset.userEdited;
+    }
 
     const piecePriceEl = document.getElementById("modalPiecePrice");
     piecePriceEl.textContent = p.piecePrice ?? "";
@@ -1915,8 +2008,23 @@
     const id = checkboxEl.dataset.id;
     const checked = checkboxEl.checked;
     document.getElementById("modalPieceOrderPriceWrap").style.display = checked ? "" : "none";
+    const updateData = { allowPieceOrder: checked };
+    // চালু করার সময় "পিস প্রতি বিক্রয় মূল্য" ম্যানুয়ালি এডিট করা না থাকলে অটো-ক্যালকুলেট করে বসিয়ে দেয়
+    if (checked) {
+      const priceEl = document.getElementById("modalPieceOrderPrice");
+      const piecesEl = document.getElementById("modalPieces");
+      const product = allProducts.find((p) => p.id === id);
+      if (priceEl && priceEl.dataset.userEdited !== "1" && product) {
+        const pieces = (piecesEl ? piecesEl.textContent.trim() : "") || product.piecesPerCarton;
+        const val = calcPieceOrderPrice(effectivePriceForCalc(product.price, product.freePrice), pieces, product.freeQty);
+        if (val !== null) {
+          priceEl.textContent = val;
+          updateData.pieceOrderPrice = val;
+        }
+      }
+    }
     try {
-      await productsCol.doc(id).update({ allowPieceOrder: checked });
+      await productsCol.doc(id).update(updateData);
     } catch (err) {
       alert("❌ আপডেট ব্যর্থ: " + err.message);
     }
@@ -2701,13 +2809,29 @@
         : `${p.price} টাকা`;
       const freeNote = freeQty > 0 ? ` · <strong>🎁 ${freeQty} পিস ফ্রি</strong>` : "";
 
+      // প্রতি পিসে কেনা দাম (কার্টুনের দাম ÷ (প্রতি কার্টুনে পিস + ফ্রি পিস)) ও পিস বিক্রয়মূল্য (piecePrice ফিল্ড) দেখানোর হিসাব
+      const piecesPerCartonNum = Number(p.piecesPerCarton) || 0;
+      const perPieceCostNum = (piecesPerCartonNum + freeQty) > 0 ? (Number(effectivePriceForCalc(p.price, p.freePrice)) / (piecesPerCartonNum + freeQty)) : null;
+      const perPieceCostStr = perPieceCostNum !== null
+        ? (Number.isInteger(perPieceCostNum) ? perPieceCostNum : perPieceCostNum.toFixed(2))
+        : null;
+      const pieceSellPriceStr = (p.piecePrice || "").toString().trim();
+      let pieceInfoInline = "";
+      if (perPieceCostStr !== null && pieceSellPriceStr) {
+        pieceInfoInline = ` (৳${perPieceCostStr}/৳${pieceSellPriceStr})`;
+      } else if (perPieceCostStr !== null) {
+        pieceInfoInline = ` (৳${perPieceCostStr})`;
+      } else if (pieceSellPriceStr) {
+        pieceInfoInline = ` (৳${pieceSellPriceStr})`;
+      }
+
       const pieceChip = p.allowPieceOrder
         ? `<span class="add-chip piece-chip" data-piece="1">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস"}</span>`
         : "";
       div.innerHTML = `
         <div>
           <div class="pname">${p.name} <span class="unit-badge">${formatUnitBadge(p.unitType, p.piecesPerCarton)}</span></div>
-          <div class="pprice">${priceLine} / ${p.unitType || "কার্টুন"}${p.allowPieceOrder && p.pieceOrderPrice ? ` · ${p.pieceOrderPrice} টাকা / পিস` : ""}${freeNote}</div>
+          <div class="pprice">${priceLine} / ${p.unitType || "কার্টুন"}${pieceInfoInline}${p.allowPieceOrder && p.pieceOrderPrice ? ` · ${p.pieceOrderPrice} টাকা / পিস` : ""}${freeNote}</div>
         </div>
         <div class="add-chip-row">
           <span class="add-chip">${cartonInCart ? `✓ ${p.unitType || "কার্টুন"}` : `+ ${p.unitType || "কার্টুন"}`}</span>
