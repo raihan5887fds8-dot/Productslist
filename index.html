@@ -335,8 +335,8 @@
     cursor: pointer;
     transition: all 0.15s;
   }
-  .shop-card { position: relative; padding-right: 40px; }
-  .shop-card .shop-del-btn {
+  .shop-card { position: relative; padding-right: 74px; }
+  .shop-card .shop-del-btn, .shop-card .shop-edit-btn {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -350,7 +350,9 @@
     border-radius: 6px;
     line-height: 1;
   }
+  .shop-card .shop-edit-btn { right: 40px; }
   .shop-card .shop-del-btn:hover { background: var(--brick-soft); color: var(--brick); }
+  .shop-card .shop-edit-btn:hover { background: #eef5f2; color: var(--ink); }
   .shop-card:hover { border-color: var(--ink); background: #fafcfb; }
   .shop-card.selected { border-color: var(--gold); background: var(--brick-soft); }
   .shop-card .shop-name { font-weight: 700; color: var(--ink); font-size: 15px; }
@@ -363,11 +365,12 @@
     gap: 10px;
     padding-right: 12px;
   }
-  /* "দোকান তালিকা" ট্যাবে সিরিয়াল দেখানোর সময় ডিলিট বাটনটা আর absolute না রেখে সারির শেষে বসানো হয় */
-  .shop-card.with-serial .shop-del-btn {
+  /* "দোকান তালিকা" ট্যাবে সিরিয়াল দেখানোর সময় এডিট/ডিলিট বাটন আর absolute না রেখে সারির শেষে বসানো হয় */
+  .shop-card.with-serial .shop-del-btn, .shop-card.with-serial .shop-edit-btn {
     position: static;
     flex-shrink: 0;
     margin-left: 2px;
+    right: auto;
   }
   .shop-serial {
     flex-shrink: 0;
@@ -521,6 +524,7 @@
     border: 1.5px solid var(--rule);
     cursor: pointer;
   }
+  .product-name-cell .shop-thumb { vertical-align: middle; margin-right: 8px; }
 
   /* ---------- ছবি বড় করে দেখার ভিউয়ার ---------- */
   .photo-viewer-overlay {
@@ -534,12 +538,34 @@
     z-index: 1100;
   }
   .photo-viewer-overlay.open { display: flex; }
-  .photo-viewer-overlay img {
+  .photo-viewer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 100%;
     max-height: 90vh;
+  }
+  .photo-viewer-content img {
+    max-width: 100%;
+    max-height: 62vh;
     border-radius: 10px;
     box-shadow: 0 16px 40px rgba(0,0,0,0.4);
   }
+  .photo-viewer-details {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    max-width: 380px;
+    width: 88vw;
+    text-align: center;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+  }
+  .photo-viewer-details.hidden { display: none; }
+  .photo-viewer-details .pv-name { font-weight: 700; font-size: 15px; color: var(--ink); }
+  .photo-viewer-details .pv-price { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .photo-viewer-details .pv-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .photo-viewer-details .pv-add-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
   .photo-viewer-close {
     position: absolute;
     top: 16px;
@@ -555,6 +581,27 @@
     line-height: 1;
   }
   .photo-viewer-close:hover { background: rgba(255,255,255,0.22); }
+  .photo-viewer-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: none;
+    font-size: 30px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .photo-viewer-nav:hover { background: rgba(255,255,255,0.22); }
+  .photo-viewer-nav.hidden { display: none; }
+  .photo-viewer-prev { left: 14px; }
+  .photo-viewer-next { right: 14px; }
 
   /* ---------- অর্ডার কার্ট ---------- */
   .cart-row {
@@ -619,6 +666,8 @@
   .pick-list-item:hover { background: #eef5f2; }
   .pick-list-item .pname { font-weight: 600; font-size: 14px; }
   .pick-list-item .pprice { font-size: 12.5px; color: var(--muted); }
+  .pick-item-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .pick-item-thumb { width: 42px; height: 42px; }
   .add-chip {
     background: var(--ink);
     color: #fff;
@@ -672,6 +721,8 @@
   }
   .order-card .order-shop { font-weight: 700; color: var(--ink); font-size: 15px; }
   .order-card .order-date { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .order-card .order-address { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+  .order-card .order-address::before { content: "📍 "; }
   .order-card .order-amount { font-weight: 700; color: var(--gold-deep); font-size: 16px; }
   .order-card .order-items-count { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
 
@@ -1098,6 +1149,15 @@
         <label>ফ্রি সহ বিক্রয়মূল্য</label>
         <input type="number" id="freePrice" placeholder="টাকা" oninput="recalcAddPieceOrderPrice()">
       </div>
+      <div class="full-width photo-field">
+        <label>প্রোডাক্টের ছবি (ইচ্ছিক)</label>
+        <div class="location-row">
+          <input type="file" accept="image/*" capture="environment" id="productPhotoInput" style="display:none" onchange="handleShopPhotoSelect(this, 'product')">
+          <button type="button" class="location-btn" onclick="document.getElementById('productPhotoInput').click()">📷 ছবি তুলুন</button>
+        </div>
+        <input type="hidden" id="productPhotoData">
+        <div id="productPhotoPreview" class="location-preview"></div>
+      </div>
     </div>
     <button onclick="addProduct()">প্রোডাক্ট যোগ করুন</button>
     <div id="status"></div>
@@ -1322,6 +1382,15 @@
     <h3 id="modalProductName" contenteditable="true" data-field="name" onblur="handleCellEdit(this)"></h3>
 
     <div class="modal-field">
+      <label>প্রোডাক্টের ছবি</label>
+      <div id="modalPhotoPreview" class="location-preview"></div>
+      <input type="file" accept="image/*" capture="environment" id="modalPhotoInput" style="display:none" onchange="handleModalPhotoSelect(this)">
+      <div class="location-row">
+        <button type="button" class="location-btn" onclick="document.getElementById('modalPhotoInput').click()">📷 ছবি তুলুন/বদলান</button>
+      </div>
+    </div>
+
+    <div class="modal-field">
       <label>প্যাকেজিং ধরন</label>
       <select id="modalUnitType" onchange="handleUnitTypeChange(this)">
         <option value="কার্টুন">কার্টুন</option>
@@ -1372,10 +1441,45 @@
   </div>
 </div>
 
+<!-- দোকান বিস্তারিত/এডিট পপআপ -->
+<div id="shopDetailModal" class="modal-overlay" onclick="closeShopDetailsOnOverlay(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button type="button" class="modal-close" onclick="closeShopDetails()">✕</button>
+    <h3 id="shopDetailName" contenteditable="true" data-field="name" onblur="handleShopDetailEdit(this)"></h3>
+
+    <div class="modal-field">
+      <label>কোন বাজার</label>
+      <div class="select-row">
+        <select id="shopDetailMarket" onchange="handleShopDetailMarketChange(this)">
+          <option value="">-- বাছাই করুন --</option>
+        </select>
+        <button type="button" class="add-mini-btn" onclick="promptAddMarket(document.getElementById('currentRouteInput').value, 'shopDetailMarket')">+</button>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>মোবাইল নম্বর</label>
+      <div id="shopDetailMobile" contenteditable="true" data-field="mobile" onblur="handleShopDetailEdit(this)"></div>
+    </div>
+    <div class="modal-field">
+      <label>ঠিকানা</label>
+      <div id="shopDetailAddress" contenteditable="true" data-field="address" onblur="handleShopDetailEdit(this)"></div>
+    </div>
+
+    <div class="modal-danger-zone">
+      <button type="button" class="danger-link" onclick="deleteShopFromModal()">🗑️ এই দোকানটি ডিলিট করুন</button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= ছবি বড় করে দেখার ভিউয়ার ================= -->
 <div id="photoViewerOverlay" class="photo-viewer-overlay" onclick="closePhotoViewer(event)">
   <button type="button" class="photo-viewer-close" onclick="closePhotoViewer(event)">✕</button>
-  <img id="photoViewerImg" src="" alt="ছবি">
+  <button type="button" class="photo-viewer-nav photo-viewer-prev" id="photoViewerPrevBtn" onclick="photoViewerPrev(event)">‹</button>
+  <div class="photo-viewer-content" onclick="event.stopPropagation()">
+    <img id="photoViewerImg" src="" alt="ছবি">
+    <div id="photoViewerDetails" class="photo-viewer-details"></div>
+  </div>
+  <button type="button" class="photo-viewer-nav photo-viewer-next" id="photoViewerNextBtn" onclick="photoViewerNext(event)">›</button>
 </div>
 
 
@@ -1633,6 +1737,36 @@
     return fp > 0 ? fp : price;
   }
 
+  // প্রোডাক্টের দাম/ফ্রি/পিস সংক্রান্ত বিস্তারিত তথ্য HTML আকারে তৈরি করার শেয়ার্ড হেল্পার —
+  // অর্ডার পিকার লিস্ট আইটেম ও ছবি ভিউয়ারের বিবরণ, দুই জায়গাতেই ব্যবহার হয়
+  function buildProductPriceDetails(p) {
+    // "ফ্রি সহ বিক্রয়মূল্য" শুধু তখনই ধরা হবে যখন এটা একটা প্রকৃত পজিটিভ সংখ্যা — খালি/০ থাকলে দাম ০ ধরা যাবে না
+    const hasFreePrice = Number(p.freePrice) > 0;
+    const freeQty = Number(p.freeQty) || 0;
+    const priceLine = hasFreePrice
+      ? `<span style="text-decoration:line-through;color:var(--muted);">${p.price} টাকা</span> <strong style="color:var(--gold-deep);">${p.freePrice} টাকা (ফ্রি সহ)</strong>`
+      : `${p.price} টাকা`;
+    const freeNote = freeQty > 0 ? ` · <strong>🎁 ${freeQty} পিস ফ্রি</strong>` : "";
+
+    // প্রতি পিসে কেনা দাম (কার্টুনের দাম ÷ (প্রতি কার্টুনে পিস + ফ্রি পিস)) ও পিস বিক্রয়মূল্য (piecePrice ফিল্ড) দেখানোর হিসাব
+    const piecesPerCartonNum = Number(p.piecesPerCarton) || 0;
+    const perPieceCostNum = (piecesPerCartonNum + freeQty) > 0 ? (Number(effectivePriceForCalc(p.price, p.freePrice)) / (piecesPerCartonNum + freeQty)) : null;
+    const perPieceCostStr = perPieceCostNum !== null
+      ? (Number.isInteger(perPieceCostNum) ? perPieceCostNum : perPieceCostNum.toFixed(2))
+      : null;
+    const pieceSellPriceStr = (p.piecePrice || "").toString().trim();
+    let pieceInfoInline = "";
+    if (perPieceCostStr !== null && pieceSellPriceStr) {
+      pieceInfoInline = ` (৳${perPieceCostStr}/৳${pieceSellPriceStr})`;
+    } else if (perPieceCostStr !== null) {
+      pieceInfoInline = ` (৳${perPieceCostStr})`;
+    } else if (pieceSellPriceStr) {
+      pieceInfoInline = ` (৳${pieceSellPriceStr})`;
+    }
+
+    return { priceLine, freeNote, pieceInfoInline, hasFreePrice, freeQty };
+  }
+
   // কার্টুনের দাম, প্রতি কার্টুনে পিস ও (থাকলে) ফ্রি পিস থেকে "পিস প্রতি বিক্রয় মূল্য" ক্যালকুলেট করার হেল্পার —
   // ফ্রি পিস থাকলে সেটাও মোট পিসের সাথে যোগ হবে, কারণ একই দামে বাড়তি পিসও পাওয়া যাচ্ছে
   function calcPieceOrderPrice(price, pieces, freeQty) {
@@ -1764,6 +1898,7 @@
     const freePrice = document.getElementById("freePrice").value;
     const allowPieceOrder = document.getElementById("allowPieceOrder").checked;
     const pieceOrderPrice = document.getElementById("pieceOrderPrice").value;
+    const photo = document.getElementById("productPhotoData").value;
     const statusEl = document.getElementById("status");
 
     if (!name || !pieces || !price) {
@@ -1778,7 +1913,7 @@
     }
 
     try {
-      await productsCol.add({
+      const productData = {
         name: name,
         unitType: unitType,
         piecesPerCarton: Number(pieces),
@@ -1790,7 +1925,9 @@
         allowPieceOrder: allowPieceOrder,
         pieceOrderPrice: allowPieceOrder ? Number(pieceOrderPrice) : null,
         createdAt: new Date()
-      });
+      };
+      if (photo) productData.photo = photo;
+      await productsCol.add(productData);
 
       // ফর্ম রিসেট
       document.getElementById("productName").value = "";
@@ -1808,6 +1945,8 @@
       document.getElementById("pieceOrderPrice").value = "";
       delete document.getElementById("pieceOrderPrice").dataset.userEdited;
       togglePieceOrderField(false, "pieceOrderPriceWrap");
+      document.getElementById("productPhotoData").value = "";
+      clearShopPhoto("product");
 
       statusEl.textContent = "✅ প্রোডাক্ট সফলভাবে যোগ হয়েছে।";
       statusEl.style.color = "green";
@@ -1914,17 +2053,23 @@
     }
 
     tbody.innerHTML = "";
+    const tablePhotoProducts = list.filter((d) => d.photo);
+    const tablePhotoList = tablePhotoProducts.map((d) => d.photo);
     list.forEach((d) => {
       const row = document.createElement("tr");
       if (d.outOfStock) row.classList.add("out-of-stock-row");
       const stockBtn = `<span class="stock-toggle-btn${d.outOfStock ? " is-out" : ""}" title="স্টক আছে/নাই টগল করুন" onclick="event.stopPropagation(); toggleStock('${d.id}', ${!!d.outOfStock})">${d.outOfStock ? "🚫 স্টক নাই" : "✔️ স্টক আছে"}</span>`;
+      const photoIdx = d.photo ? tablePhotoList.indexOf(d.photo) : -1;
+      const photoThumb = d.photo ? `<img src="${d.photo}" class="shop-thumb" onclick="event.stopPropagation(); openPhotoViewerInList(tableProductPhotoList, ${photoIdx}, event, tableProductPhotoProducts)">` : "";
       row.innerHTML = `
-        <td class="product-name-cell" onclick="openDetails('${d.id}')">${d.name} <span class="unit-badge">${formatUnitBadge(d.unitType, d.piecesPerCarton)}</span>${d.allowPieceOrder ? `<span class="unit-badge piece-allowed-badge">পিস অনুমতি</span>` : ""}${stockBtn}</td>
+        <td class="product-name-cell" onclick="openDetails('${d.id}')">${photoThumb}${d.name} <span class="unit-badge">${formatUnitBadge(d.unitType, d.piecesPerCarton)}</span>${d.allowPieceOrder ? `<span class="unit-badge piece-allowed-badge">পিস অনুমতি</span>` : ""}${stockBtn}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="price" data-type="number" onblur="handleCellEdit(this)">${d.price}</td>
         <td contenteditable="true" data-id="${d.id}" data-field="freePrice" data-type="number" onblur="handleCellEdit(this)">${d.freePrice ?? 0}</td>
       `;
       tbody.appendChild(row);
     });
+    window.tableProductPhotoList = tablePhotoList;
+    window.tableProductPhotoProducts = tablePhotoProducts;
   };
 
   // প্রোডাক্টের স্টক আছে/নাই টগল করার ফাংশন — তালিকা পেইজ থেকে এক ক্লিকে মার্ক করা যাবে
@@ -1987,6 +2132,8 @@
     const freePriceEl = document.getElementById("modalFreePrice");
     freePriceEl.textContent = p.freePrice ?? "";
     freePriceEl.dataset.id = id;
+
+    renderModalPhotoPreview(p.photo || "");
 
     document.getElementById("detailModal").classList.add("open");
   };
@@ -2055,6 +2202,55 @@
     if (confirm("আপনি কি নিশ্চিত এই প্রোডাক্টটি মুছে ফেলতে চান?")) {
       await productsCol.doc(currentModalProductId).delete();
       closeDetails();
+    }
+  };
+
+  // পপআপে প্রোডাক্টের ছবি দেখানো/বদলানো/মুছে ফেলা
+  function renderModalPhotoPreview(photo) {
+    const preview = document.getElementById("modalPhotoPreview");
+    if (!preview) return;
+    if (photo) {
+      preview.innerHTML = `
+        <img src="${photo}" class="photo-thumb" onclick="openPhotoViewer('${photo}', event)">
+        <button type="button" class="location-clear-btn" onclick="removeModalPhoto()">✕ মুছুন</button>
+      `;
+    } else {
+      preview.innerHTML = "";
+    }
+  }
+
+  window.handleModalPhotoSelect = function(inputEl) {
+    const file = inputEl.files && inputEl.files[0];
+    if (!file || !currentModalProductId) { inputEl.value = ""; return; }
+    const preview = document.getElementById("modalPhotoPreview");
+    if (preview) preview.innerHTML = "⏳ ছবি প্রসেস হচ্ছে...";
+    const targetId = currentModalProductId;
+    compressShopPhoto(file, 800, 120)
+      .then(async (result) => {
+        try {
+          await productsCol.doc(targetId).update({ photo: result.dataUrl });
+          renderModalPhotoPreview(result.dataUrl);
+        } catch (err) {
+          alert("❌ ছবি সেভ করা যায়নি: " + err.message);
+        }
+        inputEl.value = "";
+      })
+      .catch(() => {
+        if (preview) preview.innerHTML = '<span class="location-error">❌ ছবি প্রসেস করা যায়নি।</span>';
+        inputEl.value = "";
+      });
+  };
+
+  window.removeModalPhoto = async function() {
+    if (!currentModalProductId) return;
+    if (!confirm("এই প্রোডাক্টের ছবি মুছে ফেলতে চান?")) return;
+    try {
+      await productsCol.doc(currentModalProductId).update({
+        photo: firebase.firestore.FieldValue.delete()
+      });
+      renderModalPhotoPreview("");
+    } catch (err) {
+      alert("❌ মুছা যায়নি: " + err.message);
     }
   };
 
@@ -2224,22 +2420,130 @@
   };
 
   // ================= ছবি বড় করে দেখার ভিউয়ার =================
-  // দোকানের থাম্বনেইল বা প্রিভিউ ছবিতে ক্লিক করলে ওভারলে-তে বড় করে দেখায়
+  // দোকানের থাম্বনেইল বা প্রিভিউ ছবিতে ক্লিক করলে ওভারলে-তে বড় করে দেখায়।
+  // photoViewerList/photoViewerIndex থাকলে ‹ › বাটন দিয়ে একটার পর একটা ছবি দেখা যায়।
+  // photoViewerProducts-এ (ঐ ইনডেক্সে মিল রেখে) প্রোডাক্ট রেফারেন্স থাকলে ছবির নিচে নাম/দাম ও "+ কার্টে যোগ করুন" বাটন দেখায়।
+  let photoViewerList = [];
+  let photoViewerIndex = -1;
+  let photoViewerProducts = [];
+
+  function updatePhotoViewerNav() {
+    const prevBtn = document.getElementById("photoViewerPrevBtn");
+    const nextBtn = document.getElementById("photoViewerNextBtn");
+    const showNav = photoViewerList.length > 1;
+    if (prevBtn) prevBtn.classList.toggle("hidden", !showNav);
+    if (nextBtn) nextBtn.classList.toggle("hidden", !showNav);
+  }
+
+  function renderPhotoViewerDetails() {
+    const detailsEl = document.getElementById("photoViewerDetails");
+    if (!detailsEl) return;
+    const product = photoViewerProducts[photoViewerIndex];
+    if (!product) {
+      detailsEl.classList.add("hidden");
+      detailsEl.innerHTML = "";
+      return;
+    }
+    detailsEl.classList.remove("hidden");
+    const cartonInCart = !!orderCart[product.id];
+    const pieceKey = product.id + "_piece";
+    const pieceInCart = !!orderCart[pieceKey];
+    const { priceLine, freeNote, pieceInfoInline } = buildProductPriceDetails(product);
+    const unitLabel = formatUnitBadge(product.unitType, product.piecesPerCarton);
+    const categoryNote = product.priceCategory ? ` · <span class="unit-badge">${product.priceCategory}</span>` : "";
+    const pieceOrderNote = (product.allowPieceOrder && product.pieceOrderPrice)
+      ? `<div class="pv-sub">পিসে অর্ডার করা যাবে · ${product.pieceOrderPrice} টাকা / পিস</div>`
+      : "";
+    const pieceChip = product.allowPieceOrder
+      ? `<span class="add-chip piece-chip">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস যোগ করুন"}</span>`
+      : "";
+    detailsEl.innerHTML = `
+      <div class="pv-name">${product.name} <span class="unit-badge">${unitLabel}</span></div>
+      <div class="pv-price">${priceLine} / ${product.unitType || "কার্টুন"}${pieceInfoInline}${freeNote}${categoryNote}</div>
+      ${pieceOrderNote}
+      <div class="pv-add-row">
+        <span class="add-chip">${cartonInCart ? `✓ ${product.unitType || "কার্টুন"} যোগ করা` : `+ ${product.unitType || "কার্টুন"} যোগ করুন`}</span>
+        ${pieceChip}
+      </div>
+    `;
+    detailsEl.querySelector(".add-chip:not(.piece-chip)").onclick = (evt) => {
+      evt.stopPropagation();
+      addToOrderCart(product, "carton");
+      renderPhotoViewerDetails();
+      const searchEl = document.getElementById("orderProductSearch");
+      if (searchEl) renderOrderProductPicker(searchEl.value);
+    };
+    const pieceEl = detailsEl.querySelector(".piece-chip");
+    if (pieceEl) {
+      pieceEl.onclick = (evt) => {
+        evt.stopPropagation();
+        addToOrderCart(product, "piece");
+        renderPhotoViewerDetails();
+        const searchEl = document.getElementById("orderProductSearch");
+        if (searchEl) renderOrderProductPicker(searchEl.value);
+      };
+    }
+  }
+
   window.openPhotoViewer = function(src, evt) {
     if (evt) evt.stopPropagation();
     if (!src) return;
+    photoViewerList = [src];
+    photoViewerIndex = 0;
+    photoViewerProducts = [null];
     const overlay = document.getElementById("photoViewerOverlay");
     const img = document.getElementById("photoViewerImg");
     if (img) img.src = src;
     if (overlay) overlay.classList.add("open");
+    updatePhotoViewerNav();
+    renderPhotoViewerDetails();
+  };
+
+  // একাধিক ছবির তালিকা থেকে নির্দিষ্ট ইনডেক্সে ভিউয়ার খোলার জন্য (যেমনঃ প্রোডাক্ট তালিকা/অর্ডার পিকার)।
+  // productList দিলে (photoList-এর সাথে ইনডেক্স মিলিয়ে) ছবির নিচে প্রোডাক্টের বিবরণ ও কার্টে যোগ করার অপশন দেখাবে।
+  window.openPhotoViewerInList = function(list, index, evt, productList) {
+    if (evt) evt.stopPropagation();
+    if (!list || !list.length) return;
+    photoViewerList = list;
+    photoViewerIndex = index;
+    photoViewerProducts = productList || list.map(() => null);
+    const overlay = document.getElementById("photoViewerOverlay");
+    const img = document.getElementById("photoViewerImg");
+    if (img) img.src = photoViewerList[photoViewerIndex];
+    if (overlay) overlay.classList.add("open");
+    updatePhotoViewerNav();
+    renderPhotoViewerDetails();
+  };
+
+  window.photoViewerPrev = function(evt) {
+    if (evt) evt.stopPropagation();
+    if (photoViewerList.length < 2) return;
+    photoViewerIndex = (photoViewerIndex - 1 + photoViewerList.length) % photoViewerList.length;
+    const img = document.getElementById("photoViewerImg");
+    if (img) img.src = photoViewerList[photoViewerIndex];
+    renderPhotoViewerDetails();
+  };
+
+  window.photoViewerNext = function(evt) {
+    if (evt) evt.stopPropagation();
+    if (photoViewerList.length < 2) return;
+    photoViewerIndex = (photoViewerIndex + 1) % photoViewerList.length;
+    const img = document.getElementById("photoViewerImg");
+    if (img) img.src = photoViewerList[photoViewerIndex];
+    renderPhotoViewerDetails();
   };
 
   window.closePhotoViewer = function(evt) {
     if (evt) evt.stopPropagation();
     const overlay = document.getElementById("photoViewerOverlay");
     const img = document.getElementById("photoViewerImg");
+    const detailsEl = document.getElementById("photoViewerDetails");
     if (overlay) overlay.classList.remove("open");
     if (img) img.src = "";
+    if (detailsEl) { detailsEl.classList.add("hidden"); detailsEl.innerHTML = ""; }
+    photoViewerList = [];
+    photoViewerIndex = -1;
+    photoViewerProducts = [];
   };
 
   // ================= দোকানের ছবি (ক্যামেরা দিয়ে তুলে অটো কমপ্রেস করে সেভ করা) =================
@@ -2386,6 +2690,68 @@
     }
   };
 
+  // ================= দোকানের তথ্য এডিট (নাম/বাজার/মোবাইল/ঠিকানা) =================
+  let currentShopDetailId = null;
+
+  window.openShopDetails = function(id, evt) {
+    if (evt) evt.stopPropagation();
+    const s = allShops.find((x) => x.id === id);
+    if (!s) return;
+    currentShopDetailId = id;
+    document.getElementById("shopDetailName").textContent = s.name || "";
+    renderMarketOptions(document.getElementById("shopDetailMarket"), null, s.market || "");
+    document.getElementById("shopDetailMobile").textContent = s.mobile || "";
+    document.getElementById("shopDetailAddress").textContent = s.address || "";
+    document.getElementById("shopDetailModal").classList.add("open");
+  };
+
+  window.closeShopDetails = function() {
+    document.getElementById("shopDetailModal").classList.remove("open");
+    currentShopDetailId = null;
+  };
+
+  window.closeShopDetailsOnOverlay = function(e) {
+    if (e.target.id === "shopDetailModal") closeShopDetails();
+  };
+
+  window.handleShopDetailEdit = async function(el) {
+    if (!currentShopDetailId) return;
+    const field = el.dataset.field;
+    const value = el.textContent.trim();
+    const shop = allShops.find((x) => x.id === currentShopDetailId);
+    if (field === "name" && !value) {
+      alert("⚠️ দোকানের নাম খালি রাখা যাবে না।");
+      el.textContent = shop ? shop.name : "";
+      return;
+    }
+    try {
+      await shopsCol.doc(currentShopDetailId).update({ [field]: value });
+    } catch (err) {
+      alert("❌ সেভ করা যায়নি: " + err.message);
+      if (shop) el.textContent = shop[field] || "";
+    }
+  };
+
+  window.handleShopDetailMarketChange = async function(selectEl) {
+    if (!currentShopDetailId) return;
+    const marketName = selectEl.value;
+    const m = allMarkets.find((mm) => mm.name === marketName);
+    const route = m ? m.route : "";
+    try {
+      await shopsCol.doc(currentShopDetailId).update({ market: marketName, route });
+    } catch (err) {
+      alert("❌ সেভ করা যায়নি: " + err.message);
+    }
+  };
+
+  window.deleteShopFromModal = async function() {
+    if (!currentShopDetailId) return;
+    if (confirm("আপনি কি নিশ্চিত এই দোকানটি মুছে ফেলতে চান?")) {
+      await shopsCol.doc(currentShopDetailId).delete();
+      closeShopDetails();
+    }
+  };
+
   window.renderShopList = function(filterText) {
     const box = document.getElementById("shopListBox");
     if (!box) return;
@@ -2453,8 +2819,10 @@
           <div class="shop-location-row">${locationControls}${photoControls}</div>
         </div>
         ${reorderBtns}
+        <button type="button" class="shop-edit-btn" title="দোকানের তথ্য এডিট করুন">✏️</button>
         <button type="button" class="shop-del-btn" title="দোকান ডিলিট করুন">🗑️</button>
       `;
+      div.querySelector(".shop-edit-btn").onclick = (evt) => openShopDetails(s.id, evt);
       div.querySelector(".shop-del-btn").onclick = (evt) => deleteShop(s.id, evt);
       div.onclick = () => startOrderForShop(s);
       div.querySelectorAll(".shop-map-btn[data-action]").forEach((btn) => {
@@ -2795,43 +3163,27 @@
       return;
     }
     box.innerHTML = "";
+    const pickerPhotoProducts = list.filter((p) => p.photo);
+    const pickerPhotoList = pickerPhotoProducts.map((p) => p.photo);
     list.forEach((p) => {
       const div = document.createElement("div");
       div.className = "pick-list-item";
       const cartonInCart = !!orderCart[p.id];
       const pieceKey = p.id + "_piece";
       const pieceInCart = !!orderCart[pieceKey];
-      // "ফ্রি সহ বিক্রয়মূল্য" শুধু তখনই ধরা হবে যখন এটা একটা প্রকৃত পজিটিভ সংখ্যা — খালি/০ থাকলে দাম ০ ধরা যাবে না
-      const hasFreePrice = Number(p.freePrice) > 0;
-      const freeQty = Number(p.freeQty) || 0;
-      const priceLine = hasFreePrice
-        ? `<span style="text-decoration:line-through;color:var(--muted);">${p.price} টাকা</span> <strong style="color:var(--gold-deep);">${p.freePrice} টাকা (ফ্রি সহ)</strong>`
-        : `${p.price} টাকা`;
-      const freeNote = freeQty > 0 ? ` · <strong>🎁 ${freeQty} পিস ফ্রি</strong>` : "";
-
-      // প্রতি পিসে কেনা দাম (কার্টুনের দাম ÷ (প্রতি কার্টুনে পিস + ফ্রি পিস)) ও পিস বিক্রয়মূল্য (piecePrice ফিল্ড) দেখানোর হিসাব
-      const piecesPerCartonNum = Number(p.piecesPerCarton) || 0;
-      const perPieceCostNum = (piecesPerCartonNum + freeQty) > 0 ? (Number(effectivePriceForCalc(p.price, p.freePrice)) / (piecesPerCartonNum + freeQty)) : null;
-      const perPieceCostStr = perPieceCostNum !== null
-        ? (Number.isInteger(perPieceCostNum) ? perPieceCostNum : perPieceCostNum.toFixed(2))
-        : null;
-      const pieceSellPriceStr = (p.piecePrice || "").toString().trim();
-      let pieceInfoInline = "";
-      if (perPieceCostStr !== null && pieceSellPriceStr) {
-        pieceInfoInline = ` (৳${perPieceCostStr}/৳${pieceSellPriceStr})`;
-      } else if (perPieceCostStr !== null) {
-        pieceInfoInline = ` (৳${perPieceCostStr})`;
-      } else if (pieceSellPriceStr) {
-        pieceInfoInline = ` (৳${pieceSellPriceStr})`;
-      }
+      const { priceLine, freeNote, pieceInfoInline } = buildProductPriceDetails(p);
 
       const pieceChip = p.allowPieceOrder
         ? `<span class="add-chip piece-chip" data-piece="1">${pieceInCart ? "✓ পিস যোগ করা" : "+ পিস"}</span>`
         : "";
+      const photoThumb = p.photo ? `<img src="${p.photo}" class="shop-thumb pick-item-thumb" onclick="event.stopPropagation(); openPhotoViewerInList(orderPickerPhotoList, ${pickerPhotoList.indexOf(p.photo)}, event, orderPickerPhotoProducts)">` : "";
       div.innerHTML = `
-        <div>
-          <div class="pname">${p.name} <span class="unit-badge">${formatUnitBadge(p.unitType, p.piecesPerCarton)}</span></div>
-          <div class="pprice">${priceLine} / ${p.unitType || "কার্টুন"}${pieceInfoInline}${p.allowPieceOrder && p.pieceOrderPrice ? ` · ${p.pieceOrderPrice} টাকা / পিস` : ""}${freeNote}</div>
+        <div class="pick-item-main">
+          ${photoThumb}
+          <div>
+            <div class="pname">${p.name} <span class="unit-badge">${formatUnitBadge(p.unitType, p.piecesPerCarton)}</span></div>
+            <div class="pprice">${priceLine} / ${p.unitType || "কার্টুন"}${pieceInfoInline}${p.allowPieceOrder && p.pieceOrderPrice ? ` · ${p.pieceOrderPrice} টাকা / পিস` : ""}${freeNote}</div>
+          </div>
         </div>
         <div class="add-chip-row">
           <span class="add-chip">${cartonInCart ? `✓ ${p.unitType || "কার্টুন"}` : `+ ${p.unitType || "কার্টুন"}`}</span>
@@ -2843,6 +3195,8 @@
       if (pieceEl) pieceEl.onclick = (evt) => { evt.stopPropagation(); addToOrderCart(p, "piece"); };
       box.appendChild(div);
     });
+    window.orderPickerPhotoList = pickerPhotoList;
+    window.orderPickerPhotoProducts = pickerPhotoProducts;
   };
 
   window.addToOrderCart = function(product, mode) {
@@ -3089,6 +3443,9 @@
     box.innerHTML = "";
     list.forEach((o, index) => {
       const dateStr = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString("bn-BD") : "";
+      // দোকানের বর্তমান (সর্বশেষ) ঠিকানা দেখানো হচ্ছে
+      const shopForAddr = allShops.find((sh) => sh.id === o.shopId);
+      const addressStr = shopForAddr && shopForAddr.address ? shopForAddr.address : "";
       const div = document.createElement("div");
       div.className = "order-card";
       div.innerHTML = `
@@ -3098,6 +3455,7 @@
           <div>
             <div class="order-shop">${o.shopName}${o.market ? `<span class="market-badge">${o.market}</span>` : ""}${o.route ? `<span class="route-badge">🛣️ ${o.route}</span>` : ""}</div>
             <div class="order-date">${dateStr}</div>
+            ${addressStr ? `<div class="order-address">${addressStr}</div>` : ""}
           </div>
           <div class="order-amount">${o.grandTotal} টাকা</div>
         </div>
@@ -3268,12 +3626,15 @@
     currentModalOrderId = id;
     const dateStr = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString("bn-BD") : "";
     document.getElementById("orderDetailShopName").textContent = o.shopName;
-    document.getElementById("orderDetailMeta").textContent = `${o.route ? "রুট: " + o.route + " · " : ""}${o.market ? o.market + " · " : ""}${dateStr}`;
+    // দোকানের বর্তমান (সর্বশেষ) ঠিকানা — অর্ডারের সময়কার নয়
+    const shopForDetail = allShops.find((sh) => sh.id === o.shopId);
+    const detailAddressStr = shopForDetail && shopForDetail.address ? shopForDetail.address : "";
+    document.getElementById("orderDetailMeta").textContent = `${o.route ? "রুট: " + o.route + " · " : ""}${o.market ? o.market + " · " : ""}${dateStr}${detailAddressStr ? " · 📍 " + detailAddressStr : ""}`;
     // দোকানের ম্যাপ লোকেশন — শুধু দেখার জন্য (এখান থেকে এডিট/মুছে ফেলা যাবে না, সেটা দোকান তালিকা থেকে করতে হবে)
     // সবসময় দোকানের বর্তমান (সর্বশেষ) লোকেশনটাই দেখানো হয়, অর্ডারের সময়কার নয়
     const mapRow = document.getElementById("orderDetailMapRow");
     if (mapRow) {
-      const shop = allShops.find((sh) => sh.id === o.shopId);
+      const shop = shopForDetail;
       if (shop && shop.mapLink) {
         mapRow.innerHTML = `<button type="button" class="shop-map-icon-btn" id="orderDetailMapBtn" title="দোকানের ম্যাপ লোকেশন দেখুন">📍</button>`;
         const btn = document.getElementById("orderDetailMapBtn");
